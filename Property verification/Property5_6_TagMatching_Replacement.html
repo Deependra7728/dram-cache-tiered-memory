@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Properties 5 & 6 - Tag Storage/Matching and Replacement Policy Verification</title>
+<style>
+  @page { size: A4; margin: 22mm 20mm 22mm 20mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 12.5pt;
+    line-height: 1.6;
+    color: #1a1a1a;
+  }
+  .code, code, pre { font-family: "Consolas", "Courier New", monospace; font-size: 10.5pt; }
+
+  .titleblock {
+    text-align: center;
+    border-bottom: 3px solid #2c3e50;
+    padding-bottom: 18px;
+    margin-bottom: 30px;
+  }
+  .titleblock .eyebrow {
+    font-family: "Consolas", monospace;
+    font-size: 10pt; letter-spacing: 2px; text-transform: uppercase;
+    color: #7f8c8d; margin-bottom: 8px;
+  }
+  .titleblock h1 { font-size: 21pt; margin: 6px 0 4px; color: #1a1a1a; }
+  .titleblock .subtitle { font-size: 12.5pt; color: #555; font-style: italic; }
+
+  .part-marker {
+    display: inline-block;
+    font-family: "Consolas", monospace;
+    font-size: 10pt;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background: #a6791f;
+    color: #fff;
+    padding: 4px 14px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    font-size: 15pt; color: #1a1a1a;
+    border-left: 5px solid #2c3e50;
+    padding-left: 12px;
+    margin-top: 34px; margin-bottom: 12px;
+  }
+  h3 { font-size: 12.5pt; color: #2c3e50; margin-top: 22px; margin-bottom: 8px; }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  .analogy-box {
+    background: #f7f6f2; border: 1px solid #d8d5cc; border-left: 4px solid #a6791f;
+    border-radius: 4px; padding: 14px 18px; margin: 16px 0;
+    font-style: italic; color: #333;
+  }
+  .analogy-box b { font-style: normal; color: #7e5b14; }
+
+  .claim-box {
+    background: #eef2f5; border: 1px solid #c7d3db; border-left: 4px solid #2c3e50;
+    border-radius: 4px; padding: 14px 18px; margin: 16px 0;
+  }
+  .claim-box .label {
+    font-family: "Consolas", monospace; font-size: 9.5pt; letter-spacing: 1px;
+    text-transform: uppercase; color: #2c3e50; font-weight: bold; margin-bottom: 6px;
+  }
+
+  .example-box {
+    background: #fdf6e8; border: 1px solid #e8d9ae; border-left: 4px solid #a6791f;
+    border-radius: 4px; padding: 14px 18px; margin: 16px 0;
+  }
+  .example-box .label {
+    font-family: "Consolas", monospace; font-size: 9.5pt; letter-spacing: 1px;
+    text-transform: uppercase; color: #7e5b14; font-weight: bold; margin-bottom: 8px;
+  }
+  .example-box .calc {
+    font-family: "Consolas", monospace; font-size: 11pt;
+    background: #fff; border: 1px solid #e8d9ae; border-radius: 4px;
+    padding: 10px 14px; margin: 8px 0;
+  }
+
+  .code-block {
+    background: #282c34; color: #dcdfe4; border-radius: 5px;
+    padding: 14px 16px; margin: 10px 0 16px; overflow-x: auto;
+    white-space: pre; font-size: 10pt; line-height: 1.5;
+  }
+  .code-block .comment { color: #7f8890; }
+  .code-block .kw { color: #61afef; }
+  .code-block .fn { color: #e5c07b; }
+  .code-block .num { color: #d19a66; }
+  .code-block .type { color: #56b6c2; }
+
+  .file-tag {
+    display: inline-block; font-family: "Consolas", monospace; font-size: 9.5pt;
+    background: #2c3e50; color: #fff; padding: 3px 10px; border-radius: 3px; margin-bottom: -2px;
+  }
+
+  .evidence-block { margin: 18px 0 24px; padding-bottom: 6px; }
+  .evidence-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; background: #2c3e50; color: #fff; border-radius: 50%;
+    font-family: "Consolas", monospace; font-size: 12pt; font-weight: bold; margin-right: 10px;
+  }
+  .evidence-title { font-size: 13pt; font-weight: bold; color: #1a1a1a; }
+
+  ul, ol { margin: 8px 0; padding-left: 26px; }
+  li { margin: 5px 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 14px 0 20px; font-size: 11pt; }
+  th, td { border: 1px solid #d0d0d0; padding: 7px 10px; text-align: left; }
+  th { background: #2c3e50; color: #fff; font-family: "Consolas", monospace; font-size: 10pt; }
+  tr:nth-child(even) td { background: #f7f6f2; }
+  td.mono { font-family: "Consolas", monospace; font-size: 10.5pt; }
+
+  .conclusion-box {
+    background: #e8f4ea; border: 1px solid #b7d9bd; border-left: 5px solid #3f7a4a;
+    border-radius: 4px; padding: 16px 20px; margin: 20px 0;
+  }
+  .conclusion-box .label {
+    font-family: "Consolas", monospace; font-size: 9.5pt; letter-spacing: 1px;
+    text-transform: uppercase; color: #3f7a4a; font-weight: bold; margin-bottom: 8px;
+  }
+
+  .verdict-strip {
+    display: flex; justify-content: space-around; text-align: center;
+    background: #2c3e50; color: #fff; border-radius: 5px; padding: 14px 10px; margin: 24px 0;
+  }
+  .verdict-strip .item { flex: 1; }
+  .verdict-strip .num { font-size: 16pt; font-weight: bold; font-family: "Consolas", monospace; }
+  .verdict-strip .label { font-size: 8.5pt; letter-spacing: 0.5px; text-transform: uppercase; color: #bcccdc; margin-top: 3px; }
+
+  footer {
+    margin-top: 40px; padding-top: 10px; border-top: 1px solid #d0d0d0;
+    font-family: "Consolas", monospace; font-size: 8.5pt; color: #999; text-align: center;
+  }
+
+  .page-break { page-break-before: always; }
+
+  .toc {
+    background: #f7f6f2; border: 1px solid #d8d5cc; border-radius: 5px;
+    padding: 14px 20px; margin: 20px 0;
+  }
+  .toc .toc-title {
+    font-family: "Consolas", monospace; font-size: 9.5pt; letter-spacing: 1px;
+    text-transform: uppercase; color: #7f8c8d; margin-bottom: 8px;
+  }
+  .toc ul { margin: 4px 0; padding-left: 20px; }
+
+  .parking-diagram {
+    display: flex; gap: 8px; justify-content: center; margin: 18px 0; flex-wrap: wrap;
+  }
+  .slot {
+    width: 90px; border: 1.5px solid #2c3e50; border-radius: 5px;
+    text-align: center; font-family: "Consolas", monospace; font-size: 9pt;
+    padding: 8px 4px; background: #f7f6f2;
+  }
+  .slot .slotnum { font-size: 8pt; color: #7f8c8d; }
+  .slot.occupied { background: #fdf6e8; border-color: #a6791f; }
+  .slot .tagval { font-weight: bold; font-size: 11pt; margin: 4px 0; }
+</style>
+</head>
+<body>
+
+<div class="titleblock">
+  <div class="eyebrow">Property Verification &middot; DRAM Cache Manager &middot; ChampSim Port</div>
+  <h1>Properties 5 &amp; 6</h1>
+  <div class="subtitle">Tag Storage &amp; Matching Behavior, and Replacement Policy</div>
+</div>
+
+<div class="toc">
+  <div class="toc-title">Contents of this document</div>
+  <ul>
+    <li><b>Part A &mdash; Property 5: Tag Storage and Matching.</b> How the DRAM cache remembers what it's holding, and how it checks whether a request is a hit or a miss.</li>
+    <li><b>Part B &mdash; Property 6: Replacement Policy.</b> How the DRAM cache decides what to throw out when a new line needs its spot.</li>
+  </ul>
+</div>
+
+<!-- ============================================================= -->
+<!-- PART A — PROPERTY 5                                            -->
+<!-- ============================================================= -->
+
+<span class="part-marker">Part A</span>
+<h2>1. What "Tag Storage and Matching" Means</h2>
+
+<p>
+Every cache needs to answer one basic question fast: <i>"Do I already have this address, or
+not?"</i> To answer that, it needs two things: a way to decide <b>where</b> to look (which slot
+an address belongs to), and a way to decide <b>whether what's sitting there is actually the
+right address</b> (comparing a stored fingerprint, called a <b>tag</b>, against the request).
+</p>
+
+<div class="analogy-box">
+<b>Simple analogy:</b> Picture a small parking garage with numbered spots, and a chalkboard
+next to each spot. Whenever a car parks, the attendant writes that car's license plate number
+on the chalkboard for that spot. Later, when a car pulls up asking "is my car in spot&nbsp;5?",
+the attendant looks at spot 5's chalkboard: is anything written there at all, and if so, does
+it match this car's plate? Both answers have to be yes for it to count as "your car is here"
+(a <b>hit</b>). If the board is blank, or the plate written there belongs to a different car,
+that's a <b>miss</b>.
+</div>
+
+<h2>2. Why This Property Needs to Be True</h2>
+<p>
+This is the most basic correctness requirement any cache has. If the DRAM cache ever reported a
+hit for the wrong address, or failed to notice it already had the right data, every result the
+simulator produces would be meaningless. This needs to be verified precisely: what exactly gets
+stored per slot, how the slot number is calculated, and what the actual comparison looks like.
+</p>
+
+<div class="claim-box">
+  <div class="label">Claim to Verify</div>
+  Each slot in the DRAM cache stores a tag (an address fingerprint) and a valid bit. A request
+  is only ever counted as a hit when both the slot is occupied (valid) <i>and</i> its stored tag
+  matches the tag of the incoming request.
+</div>
+
+<h2>3. Proof &mdash; Evidence From the Actual Source Code</h2>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">1</span><span class="evidence-title">What is actually stored in each slot ("the chalkboard")</span></div>
+  <span class="file-tag">inc/dram_cache_manager.h &middot; lines 196&ndash;204</span>
+  <div class="code-block"><span class="kw">struct</span> DCM_TAG_ENTRY {
+    <span class="type">uint64_t</span> tagDC;         <span class="comment">// the fingerprint written on the chalkboard</span>
+    <span class="type">uint64_t</span> indexDC;       <span class="comment">// which slot this is (for bookkeeping)</span>
+    <span class="type">bool</span>     validLine;     <span class="comment">// is ANYTHING parked here right now?</span>
+    <span class="type">bool</span>     dirtyLine;     <span class="comment">// has it been written to since arriving?</span>
+    <span class="type">uint64_t</span> farMemAddr;    <span class="comment">// the real address currently sitting here</span>
+};</div>
+  <p>
+  There is exactly one of these records for every slot in the cache. Nothing more is stored
+  &mdash; no separate list of "candidates," no extra bookkeeping. This is the entire chalkboard.
+  </p>
+</div>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">2</span><span class="evidence-title">How the slot number and the tag are calculated from a real address</span></div>
+  <span class="file-tag">src/dram_cache_manager.cc &middot; lines 202&ndash;210</span>
+  <div class="code-block"><span class="type">uint64_t</span> DRAM_CACHE_MANAGER::<span class="fn">returnIndexDC</span>(<span class="type">uint64_t</span> address)
+{
+    <span class="kw">return</span> address % DCM_NUM_LINES;   <span class="comment">// which slot ("spot number")</span>
+}
+<span class="type">uint64_t</span> DRAM_CACHE_MANAGER::<span class="fn">returnTagDC</span>(<span class="type">uint64_t</span> address)
+{
+    <span class="kw">return</span> address / DCM_NUM_LINES;   <span class="comment">// the fingerprint ("plate number")</span>
+}</div>
+  <p>
+  <code>%</code> (remainder) picks the slot; <code>/</code> (whole-number division) becomes the
+  tag. Two different addresses can land on the same slot number, but they will always get
+  different tags &mdash; which is exactly what makes the comparison meaningful (see the worked
+  example below).
+  </p>
+</div>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">3</span><span class="evidence-title">The actual hit/miss comparison</span></div>
+  <span class="file-tag">src/dram_cache_manager.cc &middot; line 569</span>
+  <div class="code-block">e-&gt;isHit = oldValid &amp;&amp; (e-&gt;tagDC == slot.tagDC);</div>
+  <p>
+  This is the whole rule, in one line: a hit requires <b>both</b> conditions &mdash; the slot
+  must already be occupied (<code>oldValid</code>), <b>and</b> the tag of the incoming request
+  must equal the tag already written in that slot. If either condition fails, it is a miss.
+  </p>
+</div>
+
+<div class="example-box">
+  <div class="label">Worked Example, With the Project's Real Numbers</div>
+  <p style="margin-top:0;">
+  This cache has <code>DCM_NUM_LINES = 2,097,152</code> slots in total (128&nbsp;MiB of DRAM
+  cache, divided into 64-byte lines). Suppose two different addresses are requested one after
+  another:
+  </p>
+  <div class="calc">address<sub>1</sub> = 5,000,000
+  &rarr; index = 5,000,000 % 2,097,152 = <b>805,696</b>
+  &rarr; tag   = 5,000,000 / 2,097,152 = <b>2</b></div>
+  <p>This address is stored: slot #805,696 now has <code>tagDC = 2</code>, <code>validLine = true</code>.</p>
+  <div class="calc">address<sub>2</sub> = 2,902,848
+  &rarr; index = 2,902,848 % 2,097,152 = <b>805,696</b>   (the SAME slot!)
+  &rarr; tag   = 2,902,848 / 2,097,152 = <b>1</b>          (a DIFFERENT tag)</div>
+  <p style="margin-bottom:0;">
+  When address<sub>2</sub> is requested, the cache looks at slot #805,696 and finds
+  <code>tagDC = 2</code> sitting there &mdash; but this request's own tag is <code>1</code>. Since
+  <code>2 &ne; 1</code>, this is a <b>miss</b>, even though the slot is occupied. This is the
+  exact mechanism that leads into Property&nbsp;6 below: address<sub>2</sub> now needs to replace
+  whatever is sitting in slot #805,696.
+  </p>
+</div>
+
+<div class="page-break"></div>
+
+<h2>4. Summary of Evidence &mdash; Property 5</h2>
+<table>
+<tr><th>#</th><th>What was checked</th><th>Location</th><th>Result</th></tr>
+<tr><td>1</td><td>What is stored per cache slot</td><td>inc/dram_cache_manager.h:196&ndash;204</td><td>Tag, valid bit, dirty bit, and the real address &mdash; nothing more</td></tr>
+<tr><td>2</td><td>How slot number and tag are computed</td><td>src/dram_cache_manager.cc:202&ndash;210</td><td>Remainder gives the slot; whole-division gives the tag</td></tr>
+<tr><td>3</td><td>The actual hit/miss decision</td><td>src/dram_cache_manager.cc:569</td><td>Hit requires valid slot AND matching tag &mdash; both, always</td></tr>
+</table>
+
+<div class="conclusion-box">
+  <div class="label">Conclusion &mdash; Property 5</div>
+  The tag storage is minimal and explicit &mdash; one small record per slot &mdash; and the
+  matching rule is a single, unambiguous boolean expression requiring both validity and an exact
+  tag match. The worked example above shows this rule behaving correctly even in the tricky case
+  where two different addresses land on the same slot: the tag comparison correctly identifies
+  it as a miss rather than a false hit.
+</div>
+
+<div class="verdict-strip">
+  <div class="item"><div class="num">3</div><div class="label">Evidence<br>points</div></div>
+  <div class="item"><div class="num">2</div><div class="label">Conditions required<br>for a hit</div></div>
+  <div class="item"><div class="num">1</div><div class="label">Worked numeric<br>example verified</div></div>
+  <div class="item"><div class="num">&#10003;</div><div class="label">Property<br>verified</div></div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ============================================================= -->
+<!-- PART B — PROPERTY 6                                            -->
+<!-- ============================================================= -->
+
+<span class="part-marker">Part B</span>
+<h2>1. What "Replacement Policy" Means</h2>
+
+<p>
+When a cache is full and a new line needs to go into a slot that's already occupied by
+<i>different</i> data, something already there has to be thrown out to make room. The rule that
+decides <i>what gets thrown out</i> is called the <b>replacement policy</b>. In many caches this
+is a real decision &mdash; for example, "throw out whichever one hasn't been used in the
+longest time" (called LRU). This section explains what the replacement policy is here, and why
+it doesn't need to be that complicated.
+</p>
+
+<div class="analogy-box">
+<b>Simple analogy:</b> Picture a hotel where every guest's room number is decided by a fixed
+rule &mdash; say, room number = (day of the month) remainder (total rooms). There's no choice
+involved in picking a room for a new guest; the rule always points to exactly one specific room
+for any given day. Now suppose that room is already occupied by a guest from a different month.
+There's no committee meeting to decide who gets evicted &mdash; there is only ever one guest who
+could possibly be in that room, so <i>that</i> guest is the one who has to check out, automatically.
+That is exactly what happens in this DRAM cache.
+</div>
+
+<h2>2. Why This Property Needs to Be True</h2>
+<p>
+The paper describes the baseline design as <b>direct-mapped</b>. A direct-mapped cache is
+specifically the kind of cache where each address has exactly one possible slot &mdash; not a
+choice between several. This is different from a "set-associative" cache, which would need an
+actual replacement algorithm because several different lines could compete for the same set.
+Verifying this property means proving two things: that each address really does map to only one
+possible slot, and that whatever currently occupies that slot is correctly identified and
+evicted (with its dirty data saved, not silently lost) when a different address needs it.
+</p>
+
+<div class="claim-box">
+  <div class="label">Claim to Verify</div>
+  Every address maps to exactly one possible slot (no candidate list to choose from). When a
+  different address needs that slot, the current occupant is identified as the "victim," its
+  dirty data is preserved through a write-back if necessary, and it is then unconditionally
+  overwritten &mdash; there is no scenario where the new arrival is refused a slot it is entitled to.
+</div>
+
+<h2>3. Proof &mdash; Evidence From the Actual Source Code</h2>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">1</span><span class="evidence-title">Every address maps to exactly ONE slot &mdash; there is no list of candidates to choose from</span></div>
+  <p>
+  This was already shown in Property 5, but it is the foundation of this property too:
+  </p>
+  <span class="file-tag">src/dram_cache_manager.cc &middot; line 204</span>
+  <div class="code-block"><span class="kw">return</span> address % DCM_NUM_LINES;</div>
+  <p>
+  A remainder operation (<code>%</code>) always produces exactly one output for a given address
+  &mdash; never a set of two or more possible slots. This is what "direct-mapped" means in
+  practice: there is nothing to pick between, because there is only ever one valid destination.
+  </p>
+</div>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">2</span><span class="evidence-title">The current occupant is identified as the victim BEFORE anything is changed</span></div>
+  <span class="file-tag">src/dram_cache_manager.cc &middot; lines 560&ndash;564</span>
+  <div class="code-block"><span class="comment">// Snapshot the OLD resident line (the potential victim) BEFORE any</span>
+<span class="comment">// mutation</span>
+<span class="kw">bool</span> oldValid = slot.validLine;
+<span class="kw">bool</span> oldDirty = slot.dirtyLine;
+...
+e-&gt;victimWasValid = oldValid;
+e-&gt;victimWasDirty = oldDirty;</div>
+  <p>
+  Before the incoming request is allowed to touch the slot at all, the code first records who
+  was already living there and whether their data had been modified. This is the "victim" being
+  identified &mdash; and there is only ever one possible victim, because of Evidence&nbsp;1 above.
+  </p>
+</div>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">3</span><span class="evidence-title">If the victim's data was modified, it is saved before being overwritten &mdash; nothing is silently lost</span></div>
+  <span class="file-tag">src/dram_cache_manager.cc &middot; line 606</span>
+  <div class="code-block"><span class="kw">if</span> (oldValid &amp;&amp; oldDirty &amp;&amp; !e-&gt;isHit) {
+    e-&gt;dirtyLineAddr = oldFarAddr;
+    e-&gt;handleDirtyLine = <span class="kw">true</span>;    <span class="comment">// triggers a write-back before eviction</span>
+}</div>
+  <p>
+  A victim is only sent for a write-back if it was genuinely occupied and genuinely modified.
+  A clean victim doesn't need this step (nothing to save &mdash; an unmodified copy already
+  exists in the backing memory).
+  </p>
+</div>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">4</span><span class="evidence-title">The slot is then unconditionally overwritten &mdash; the new arrival always wins</span></div>
+  <span class="file-tag">src/dram_cache_manager.cc &middot; lines 613&ndash;620</span>
+  <div class="code-block">slot.tagDC = e-&gt;tagDC;         <span class="comment">// the old tag is gone, replaced</span>
+slot.indexDC = e-&gt;indexDC;
+slot.validLine = <span class="kw">true</span>;
+<span class="kw">if</span> (!e-&gt;isWriteReq) {
+    slot.dirtyLine = e-&gt;isHit ? slot.dirtyLine : <span class="kw">false</span>;
+} <span class="kw">else</span> {
+    slot.dirtyLine = <span class="kw">true</span>;
+}
+slot.farMemAddr = e-&gt;pkt.address;</div>
+  <p>
+  This runs every single time, with no condition that could refuse the overwrite. There is no
+  "keep the old one instead" branch anywhere in this function. Whatever was previously in the
+  slot is gone the moment this code runs &mdash; which is exactly the "forced replacement"
+  behaviour a direct-mapped cache is supposed to have.
+  </p>
+</div>
+
+<h2>4. Summary of Evidence &mdash; Property 6</h2>
+<table>
+<tr><th>#</th><th>What was checked</th><th>Location</th><th>Result</th></tr>
+<tr><td>1</td><td>How many possible slots one address can map to</td><td>src/dram_cache_manager.cc:204</td><td>Exactly one (remainder operation), never a choice</td></tr>
+<tr><td>2</td><td>Identification of the victim before any change</td><td>src/dram_cache_manager.cc:560&ndash;564</td><td>Old occupant's valid/dirty state snapshotted first</td></tr>
+<tr><td>3</td><td>Handling of a dirty victim</td><td>src/dram_cache_manager.cc:606</td><td>Write-back triggered only when genuinely needed</td></tr>
+<tr><td>4</td><td>The actual overwrite of the slot</td><td>src/dram_cache_manager.cc:613&ndash;620</td><td>Unconditional &mdash; no path refuses the new arrival</td></tr>
+</table>
+
+<div class="conclusion-box">
+  <div class="label">Conclusion &mdash; Property 6</div>
+  Because this is a direct-mapped cache, "replacement policy" is not an algorithm that chooses
+  between multiple candidates &mdash; there is only ever one possible occupant for any given
+  slot. The code correctly identifies that occupant as the victim, preserves its data with a
+  write-back if it was dirty, and then always overwrites it for the new arrival. This matches
+  the paper's stated baseline design exactly: a direct-mapped cache that "inserts on misses"
+  with forced, deterministic replacement.
+</div>
+
+<div class="verdict-strip">
+  <div class="item"><div class="num">4</div><div class="label">Evidence<br>points</div></div>
+  <div class="item"><div class="num">1</div><div class="label">Possible slot per<br>address (no choice)</div></div>
+  <div class="item"><div class="num">0</div><div class="label">Data-loss paths<br>found</div></div>
+  <div class="item"><div class="num">&#10003;</div><div class="label">Property<br>verified</div></div>
+</div>
+
+<footer>
+  Property Verification Report &middot; Properties 5 &amp; 6 of 9 &middot; DRAM Cache Manager (ChampSim port of arXiv:2303.13029)
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Property 2 - Non-Inclusive Verification</title>
+<style>
+  @page {
+    size: A4;
+    margin: 22mm 20mm 22mm 20mm;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 12.5pt;
+    line-height: 1.6;
+    color: #1a1a1a;
+    max-width: 100%;
+  }
+  .code, code, pre {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 10.5pt;
+  }
+
+  /* ---- Title block ---- */
+  .titleblock {
+    text-align: center;
+    border-bottom: 3px solid #2c3e50;
+    padding-bottom: 18px;
+    margin-bottom: 30px;
+  }
+  .titleblock .eyebrow {
+    font-family: "Consolas", monospace;
+    font-size: 10pt;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #7f8c8d;
+    margin-bottom: 8px;
+  }
+  .titleblock h1 {
+    font-size: 22pt;
+    margin: 6px 0 4px;
+    color: #1a1a1a;
+  }
+  .titleblock .subtitle {
+    font-size: 12.5pt;
+    color: #555;
+    font-style: italic;
+  }
+
+  h2 {
+    font-size: 15pt;
+    color: #1a1a1a;
+    border-left: 5px solid #2c3e50;
+    padding-left: 12px;
+    margin-top: 34px;
+    margin-bottom: 12px;
+  }
+  h3 {
+    font-size: 12.5pt;
+    color: #2c3e50;
+    margin-top: 22px;
+    margin-bottom: 8px;
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  .analogy-box {
+    background: #f7f6f2;
+    border: 1px solid #d8d5cc;
+    border-left: 4px solid #a6791f;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-style: italic;
+    color: #333;
+  }
+  .analogy-box b { font-style: normal; color: #7e5b14; }
+
+  .claim-box {
+    background: #eef2f5;
+    border: 1px solid #c7d3db;
+    border-left: 4px solid #2c3e50;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 16px 0;
+  }
+  .claim-box .label {
+    font-family: "Consolas", monospace;
+    font-size: 9.5pt;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #2c3e50;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .code-block {
+    background: #282c34;
+    color: #dcdfe4;
+    border-radius: 5px;
+    padding: 14px 16px;
+    margin: 10px 0 16px;
+    overflow-x: auto;
+    white-space: pre;
+    font-size: 10pt;
+    line-height: 1.5;
+  }
+  .code-block .comment { color: #7f8890; }
+  .code-block .kw { color: #61afef; }
+  .code-block .fn { color: #e5c07b; }
+  .code-block .miss { color: #e06c75; }
+
+  .file-tag {
+    display: inline-block;
+    font-family: "Consolas", monospace;
+    font-size: 9.5pt;
+    background: #2c3e50;
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin-bottom: -2px;
+  }
+
+  .evidence-block {
+    margin: 18px 0 24px;
+    padding-bottom: 6px;
+  }
+  .evidence-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    background: #2c3e50;
+    color: #fff;
+    border-radius: 50%;
+    font-family: "Consolas", monospace;
+    font-size: 12pt;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  .evidence-title {
+    font-size: 13pt;
+    font-weight: bold;
+    color: #1a1a1a;
+  }
+
+  ul, ol { margin: 8px 0; padding-left: 26px; }
+  li { margin: 5px 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 20px;
+    font-size: 11pt;
+  }
+  th, td {
+    border: 1px solid #d0d0d0;
+    padding: 7px 10px;
+    text-align: left;
+  }
+  th {
+    background: #2c3e50;
+    color: #fff;
+    font-family: "Consolas", monospace;
+    font-size: 10pt;
+  }
+  tr:nth-child(even) td { background: #f7f6f2; }
+
+  .conclusion-box {
+    background: #e8f4ea;
+    border: 1px solid #b7d9bd;
+    border-left: 5px solid #3f7a4a;
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin: 20px 0;
+  }
+  .conclusion-box .label {
+    font-family: "Consolas", monospace;
+    font-size: 9.5pt;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #3f7a4a;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .verdict-strip {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    background: #2c3e50;
+    color: #fff;
+    border-radius: 5px;
+    padding: 14px 10px;
+    margin: 24px 0;
+  }
+  .verdict-strip .item { flex: 1; }
+  .verdict-strip .num { font-size: 16pt; font-weight: bold; font-family: "Consolas", monospace; }
+  .verdict-strip .label { font-size: 8.5pt; letter-spacing: 0.5px; text-transform: uppercase; color: #bcccdc; margin-top: 3px; }
+
+  footer {
+    margin-top: 40px;
+    padding-top: 10px;
+    border-top: 1px solid #d0d0d0;
+    font-family: "Consolas", monospace;
+    font-size: 8.5pt;
+    color: #999;
+    text-align: center;
+  }
+
+  .page-break { page-break-before: always; }
+
+  .direction-box {
+    display: flex;
+    gap: 14px;
+    margin: 16px 0;
+  }
+  .direction-half {
+    flex: 1;
+    background: #f7f6f2;
+    border: 1px solid #d8d5cc;
+    border-radius: 5px;
+    padding: 12px 14px;
+  }
+  .direction-half .dtitle {
+    font-family: "Consolas", monospace;
+    font-size: 9.5pt;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #7e5b14;
+    margin-bottom: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="titleblock">
+  <div class="eyebrow">Property Verification &middot; DRAM Cache Manager &middot; ChampSim Port</div>
+  <h1>Property 2: Non-Inclusive</h1>
+  <div class="subtitle">Verifying that the DRAM cache and the on-chip LLC do not have to hold matching contents</div>
+</div>
+
+<h2>1. What "Non-Inclusive" Means</h2>
+
+<p>
+In some cache designs, there is a strict rule between two levels of cache: an <b>inclusive</b>
+relationship means the bigger, lower-level cache must always hold a copy of everything the
+smaller, higher-level cache holds. If the lower level ever throws a line away, it must first
+tell the upper level to throw its copy away too &mdash; otherwise the upper level would be
+holding data the lower level no longer backs up.
+</p>
+
+<p>
+A <b>non-inclusive</b> relationship means there is no such promise. The two caches are managed
+independently. Either one can hold a line the other doesn't have, either one can throw a line
+away without telling the other, and the system is still correct. Neither cache is a guaranteed
+subset or superset of the other.
+</p>
+
+<div class="analogy-box">
+<b>Simple analogy:</b> Imagine two friends who each keep their own personal notebook copying
+down notes from the same lecture (the LLC is one notebook, the DRAM cache is the other). If one
+friend erases a page from their own notebook because they don't need it anymore, they don't
+have to run over and rip the same page out of the other friend's notebook. Each notebook is
+managed on its own. One notebook might have a page the other one threw away weeks ago &mdash;
+and that's completely fine, because neither notebook ever promised to always match the other.
+</div>
+
+<h2>2. Why This Property Needs to Be True</h2>
+<p>
+The paper's design deliberately keeps the DRAM cache manager as an independent structure that
+receives traffic from "cores/LLC/DMA" and manages its own tag and metadata storage separately
+from whatever is happening in the on-chip caches above it. If the ChampSim port secretly forced
+the DRAM cache to always mirror the LLC's contents (or the other way around), it would need
+extra invalidation traffic flowing between the two levels &mdash; which would also break
+Property&nbsp;1 (Out of Coherence), since that traffic would itself be a coherence mechanism.
+Verifying non-inclusion is really checking that no such hidden synchronization exists anywhere
+in the code.
+</p>
+
+<div class="claim-box">
+  <div class="label">Claim to Verify</div>
+  When the LLC evicts a clean line, it does not tell the DRAM cache to remove anything. When
+  the DRAM cache evicts a line during a miss, it does not tell the LLC to remove anything
+  either. The two structures' contents are allowed to disagree at any point in time.
+</div>
+
+<div class="page-break"></div>
+
+<h2>3. Proof &mdash; Evidence From the Actual Source Code</h2>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">1</span><span class="evidence-title">When the LLC evicts a CLEAN line, nothing at all is sent to the DRAM cache</span></div>
+  <p>
+  This is the actual eviction code that runs inside the LLC when it needs to make room for a
+  new line (a "fill"). Look closely at the condition that guards the only message sent
+  downward:
+  </p>
+  <span class="file-tag">src/cache.cc &middot; lines 83&ndash;115</span>
+  <div class="code-block"><span class="kw">if</span> (block[set][way].dirty) {                    <span class="comment">// only enters this block if DIRTY</span>
+
+    <span class="kw">if</span> (lower_level-&gt;get_occupancy(...) == lower_level-&gt;get_size(...)) {
+        do_fill = 0;
+        lower_level-&gt;increment_WQ_FULL(...);
+    }
+    <span class="kw">else</span> {
+        PACKET writeback_packet;
+        ...
+        <span class="fn">lower_level-&gt;add_wq</span>(&amp;writeback_packet);      <span class="comment">// tells the DCM about the eviction</span>
+    }
+}
+<span class="comment">// if the victim was CLEAN, this entire block is skipped --</span>
+<span class="comment">// do_fill simply stays 1 and the LLC overwrites its own slot silently.</span></div>
+  <p>
+  The <code>lower_level-&gt;add_wq(...)</code> call &mdash; the only message the LLC ever sends
+  to the DRAM cache about an eviction &mdash; sits strictly inside <code>if
+  (block[set][way].dirty)</code>. If the line being replaced was clean, this whole block does
+  not execute at all. The LLC just quietly reuses its own slot for the new line. The DRAM cache,
+  sitting below it, is never told that line existed, let alone that it was thrown away.
+  </p>
+</div>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">2</span><span class="evidence-title">When the DRAM cache evicts a line, it never notifies the LLC</span></div>
+  <p>
+  Every single call the DRAM cache manager makes upward, toward the LLC, was searched for:
+  </p>
+  <span class="file-tag">grep search across src/dram_cache_manager.cc for "upper_level"</span>
+  <div class="code-block">upper_level_icache[i] = <span class="kw">this</span>;              <span class="comment">// wiring setup only, line 98-101</span>
+upper_level_dcache[i] = <span class="kw">this</span>;
+
+upper_level_icache[packet-&gt;cpu]-&gt;<span class="fn">return_data</span>(packet);   <span class="comment">// line 234</span>
+upper_level_dcache[packet-&gt;cpu]-&gt;<span class="fn">return_data</span>(packet);   <span class="comment">// line 236</span>
+
+upper_level_icache[resp.cpu]-&gt;<span class="fn">return_data</span>(&amp;resp);      <span class="comment">// line 1143</span>
+upper_level_dcache[resp.cpu]-&gt;<span class="fn">return_data</span>(&amp;resp);      <span class="comment">// line 1145</span>
+
+upper_level_icache[r.pkt.cpu]-&gt;<span class="fn">return_data</span>(&amp;r.pkt);    <span class="comment">// line 1169</span>
+upper_level_dcache[r.pkt.cpu]-&gt;<span class="fn">return_data</span>(&amp;r.pkt);    <span class="comment">// line 1171</span></div>
+  <p>
+  Every single one of these calls is <code>return_data(...)</code> &mdash; and
+  <code>return_data</code> only ever delivers the answer to a request the LLC itself already
+  sent down. There is no function call anywhere in this file that pushes an unsolicited
+  message up to the LLC saying "I just evicted address X, remove your copy." The DRAM cache's
+  own eviction logic, <code>classifyAndInstall()</code>
+  (<code>src/dram_cache_manager.cc</code>, described fully in Property&nbsp;6's proof), simply
+  overwrites its own slot &mdash; it never reaches upward to touch the LLC at all.
+  </p>
+</div>
+
+<div class="direction-box">
+  <div class="direction-half">
+    <div class="dtitle">Direction 1: LLC &rarr; DRAM cache</div>
+    A clean LLC eviction is completely silent. Only a <i>dirty</i> eviction sends anything
+    downward, and even then it's just a normal writeback request, not an instruction to
+    invalidate.
+  </div>
+  <div class="direction-half">
+    <div class="dtitle">Direction 2: DRAM cache &rarr; LLC</div>
+    The DRAM cache never initiates a message upward on its own. It only ever replies to
+    requests the LLC already sent it.
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<h2>4. Summary of Evidence</h2>
+
+<table>
+<tr><th>#</th><th>What was checked</th><th>Location</th><th>Result</th></tr>
+<tr><td>1</td><td>LLC's behavior when evicting a clean line</td><td>src/cache.cc:83&ndash;115</td><td>Downward message only exists inside the "dirty" branch; clean evictions send nothing</td></tr>
+<tr><td>2</td><td>Every upward call the DRAM cache makes toward the LLC</td><td>src/dram_cache_manager.cc (upper_level_* call sites)</td><td>All calls are <code>return_data()</code> answering an existing request; none push an eviction notice</td></tr>
+</table>
+
+<div class="conclusion-box">
+  <div class="label">Conclusion</div>
+  Neither direction of communication carries an "erase your copy" message. A clean line can
+  vanish from the LLC while still sitting in the DRAM cache, and a line can vanish from the
+  DRAM cache while the LLC still believes it holds a valid copy of the address above it &mdash;
+  and in both cases nothing in the code treats this as an error. This is exactly what
+  non-inclusion means: the two caches' contents are independent, and correctness of the system
+  does not depend on them matching. This is consistent with the paper's model, where the DRAM
+  cache manager is a self-contained structure with its own tag and metadata storage, not a
+  mirror of whatever the on-chip caches are holding.
+</div>
+
+<div class="verdict-strip">
+  <div class="item"><div class="num">2</div><div class="label">Directions<br>checked</div></div>
+  <div class="item"><div class="num">0</div><div class="label">Sync messages<br>found</div></div>
+  <div class="item"><div class="num">1</div><div class="label">Guarded call<br>(dirty-only WB)</div></div>
+  <div class="item"><div class="num">&#10003;</div><div class="label">Property<br>verified</div></div>
+</div>
+
+<footer>
+  Property Verification Report &middot; Property 2 of 9 &middot; DRAM Cache Manager (ChampSim port of arXiv:2303.13029)
+</footer>
+
+</body>
+</html>

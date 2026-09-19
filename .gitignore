@@ -1,0 +1,24 @@
+prefetcher/l1i_prefetcher.cc
+prefetcher/l1d_prefetcher.cc
+prefetcher/l2c_prefetcher.cc
+prefetcher/llc_prefetcher.cc
+branch/branch_predictor.cc
+replacement/llc_replacement.cc
+
+inc/champsim.h.bak
+
+bin/
+obj/
+
+# SPEC CPU2006 traces (2 GB, licensed -- download separately, see README)
+dpc3_traces/*.xz
+
+# Scratch / intermediate result dirs
+results_1M/
+results_10M/
+results_200M/
+
+# Editor backups and download logs
+*.save
+*.bak
+scripts/wget-log*

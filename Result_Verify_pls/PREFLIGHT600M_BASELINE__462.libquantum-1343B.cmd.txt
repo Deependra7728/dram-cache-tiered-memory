@@ -1,0 +1,5 @@
+./bin/champsim --warmup_instructions 100000000 --simulation_instructions 500000000 \
+  -traces dpc3_traces/462.libquantum-1343B.champsimtrace.xz
+# Configuration: BASELINE (CascadeLakeNoPartWrs). No flags => no --dcm_bypass,
+# no --dcm_policy=bear, no --dcm_policy=oracle, --dcm_link_latency_ns unset (0).
+# Binary: bin/champsim, clean rebuild after the stage-15 granularity fix.

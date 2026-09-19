@@ -1,0 +1,276 @@
+===== BASELINE_1000NS__401.bzip2-277B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.702513 instructions: 500000003 cycles: 711731050
+ DCM HITS:    2429530  MISSES:      87187  COLD_MISSES:      82368  HOT_MISSES:       4819
+ DCM ACCESS_AMPLIFICATION: 1.31343  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BASELINE_1000NS__403.gcc-16B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.242013 instructions: 500000001 cycles: 2066003721
+ DCM HITS:    4168253  MISSES:     889030  COLD_MISSES:      71553  HOT_MISSES:     817477
+ DCM ACCESS_AMPLIFICATION: 1.81038  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BASELINE_1000NS__434.zeusmp-10B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.354993 instructions: 500000002 cycles: 1408478359
+ DCM HITS:     795622  MISSES:     460350  COLD_MISSES:      75990  HOT_MISSES:     384360
+ DCM ACCESS_AMPLIFICATION: 2.07801  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BASELINE_1000NS__437.leslie3d-273B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.158746 instructions: 500000001 cycles: 3149679179
+ DCM HITS:    3897365  MISSES:     864156  COLD_MISSES:         94  HOT_MISSES:     864062
+ DCM ACCESS_AMPLIFICATION: 1.68425  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 1  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: in flight at cutoff -- ChampSim stops without draining]
+===== BASELINE_1000NS__462.libquantum-1343B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.0630876 instructions: 500000001 cycles: 7925482590
+ DCM HITS:   11191592  MISSES:    3426176  COLD_MISSES:          0  HOT_MISSES:    3426176
+ DCM ACCESS_AMPLIFICATION: 1.72952  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 1  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: in flight at cutoff -- ChampSim stops without draining]
+===== BASELINE_1000NS__482.sphinx3-1522B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.350892 instructions: 500000002 cycles: 1424938518
+ DCM HITS:    6229841  MISSES:     165629  COLD_MISSES:      18891  HOT_MISSES:     146738
+ DCM ACCESS_AMPLIFICATION: 1.12942  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BASELINE_100NS__401.bzip2-277B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.783221 instructions: 500000003 cycles: 638389093
+ DCM HITS:    2429524  MISSES:      87187  COLD_MISSES:      82368  HOT_MISSES:       4819
+ DCM ACCESS_AMPLIFICATION: 1.31343  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BASELINE_100NS__403.gcc-16B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.349453 instructions: 500000001 cycles: 1430808111
+ DCM HITS:    4168251  MISSES:     889030  COLD_MISSES:      71553  HOT_MISSES:     817477
+ DCM ACCESS_AMPLIFICATION: 1.81038  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BASELINE_100NS__434.zeusmp-10B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.949981 instructions: 500000002 cycles: 526326536
+ DCM HITS:     795626  MISSES:     460350  COLD_MISSES:      75990  HOT_MISSES:     384360
+ DCM ACCESS_AMPLIFICATION: 2.078  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BASELINE_100NS__437.leslie3d-273B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.424042 instructions: 500000001 cycles: 1179127567
+ DCM HITS:    3897365  MISSES:     864156  COLD_MISSES:         94  HOT_MISSES:     864062
+ DCM ACCESS_AMPLIFICATION: 1.68425  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 1  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: in flight at cutoff -- ChampSim stops without draining]
+===== BASELINE_100NS__462.libquantum-1343B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.215529 instructions: 500000001 cycles: 2319871839
+ DCM HITS:   11191592  MISSES:    3426176  COLD_MISSES:          0  HOT_MISSES:    3426176
+ DCM ACCESS_AMPLIFICATION: 1.72952  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 1  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: in flight at cutoff -- ChampSim stops without draining]
+===== BASELINE_100NS__482.sphinx3-1522B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.475289 instructions: 500000002 cycles: 1051990975
+ DCM HITS:    6229841  MISSES:     165629  COLD_MISSES:      18891  HOT_MISSES:     146738
+ DCM ACCESS_AMPLIFICATION: 1.12942  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BASELINE__401.bzip2-277B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.791738 instructions: 500000003 cycles: 631521845
+ DCM HITS:    2429527  MISSES:      87187  COLD_MISSES:      82368  HOT_MISSES:       4819
+ DCM ACCESS_AMPLIFICATION: 1.31343  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BASELINE__403.gcc-16B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.364307 instructions: 500000001 cycles: 1372468234
+ DCM HITS:    4168254  MISSES:     889030  COLD_MISSES:      71553  HOT_MISSES:     817477
+ DCM ACCESS_AMPLIFICATION: 1.81038  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BASELINE__434.zeusmp-10B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 1.16436 instructions: 500000002 cycles: 429421809
+ DCM HITS:     795629  MISSES:     460348  COLD_MISSES:      75990  HOT_MISSES:     384358
+ DCM ACCESS_AMPLIFICATION: 2.078  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BASELINE__437.leslie3d-273B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.51712 instructions: 500000001 cycles: 966893014
+ DCM HITS:    3897364  MISSES:     864156  COLD_MISSES:         94  HOT_MISSES:     864062
+ DCM ACCESS_AMPLIFICATION: 1.68425  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 1  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: in flight at cutoff -- ChampSim stops without draining]
+===== BASELINE__462.libquantum-1343B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.29476 instructions: 500000001 cycles: 1696294568
+ DCM HITS:   11191592  MISSES:    3426176  COLD_MISSES:          0  HOT_MISSES:    3426176
+ DCM ACCESS_AMPLIFICATION: 1.72952  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 1  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: in flight at cutoff -- ChampSim stops without draining]
+===== BASELINE__482.sphinx3-1522B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.49443 instructions: 500000002 cycles: 1011264766
+ DCM HITS:    6229842  MISSES:     165629  COLD_MISSES:      18891  HOT_MISSES:     146738
+ DCM ACCESS_AMPLIFICATION: 1.12942  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BASELINE_500NS__401.bzip2-277B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.746347 instructions: 500000003 cycles: 669929376
+ DCM HITS:    2429526  MISSES:      87187  COLD_MISSES:      82368  HOT_MISSES:       4819
+ DCM ACCESS_AMPLIFICATION: 1.31343  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BASELINE_500NS__403.gcc-16B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.29311 instructions: 500000001 cycles: 1705843527
+ DCM HITS:    4168252  MISSES:     889030  COLD_MISSES:      71553  HOT_MISSES:     817477
+ DCM ACCESS_AMPLIFICATION: 1.81038  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BASELINE_500NS__434.zeusmp-10B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.544923 instructions: 500000002 cycles: 917560238
+ DCM HITS:     795624  MISSES:     460350  COLD_MISSES:      75990  HOT_MISSES:     384360
+ DCM ACCESS_AMPLIFICATION: 2.07801  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BASELINE_500NS__437.leslie3d-273B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.243423 instructions: 500000001 cycles: 2054039096
+ DCM HITS:    3897366  MISSES:     864154  COLD_MISSES:         94  HOT_MISSES:     864060
+ DCM ACCESS_AMPLIFICATION: 1.68425  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 1  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: in flight at cutoff -- ChampSim stops without draining]
+===== BASELINE_500NS__462.libquantum-1343B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.103923 instructions: 500000001 cycles: 4811254590
+ DCM HITS:   11191592  MISSES:    3426176  COLD_MISSES:          0  HOT_MISSES:    3426176
+ DCM ACCESS_AMPLIFICATION: 1.72952  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 1  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: in flight at cutoff -- ChampSim stops without draining]
+===== BASELINE_500NS__482.sphinx3-1522B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.410623 instructions: 500000002 cycles: 1217661942
+ DCM HITS:    6229841  MISSES:     165629  COLD_MISSES:      18891  HOT_MISSES:     146738
+ DCM ACCESS_AMPLIFICATION: 1.12942  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BEAR_WR_OPT__401.bzip2-277B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.794903 instructions: 500000003 cycles: 629007829
+ DCM HITS:    2429526  MISSES:      87187  COLD_MISSES:      82368  HOT_MISSES:       4819
+ DCM ACCESS_AMPLIFICATION: 1.0709  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BEAR_WR_OPT__403.gcc-16B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.370854 instructions: 500000001 cycles: 1348240436
+ DCM HITS:    4168254  MISSES:     889030  COLD_MISSES:      71553  HOT_MISSES:     817477
+ DCM ACCESS_AMPLIFICATION: 1.48137  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BEAR_WR_OPT__434.zeusmp-10B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 1.16683 instructions: 500000002 cycles: 428510833
+ DCM HITS:     795628  MISSES:     460348  COLD_MISSES:      75990  HOT_MISSES:     384358
+ DCM ACCESS_AMPLIFICATION: 1.8223  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BEAR_WR_OPT__437.leslie3d-273B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.526057 instructions: 500000001 cycles: 950467411
+ DCM HITS:    3897365  MISSES:     864154  COLD_MISSES:         94  HOT_MISSES:     864060
+ DCM ACCESS_AMPLIFICATION: 1.44507  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BEAR_WR_OPT__462.libquantum-1343B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.294933 instructions: 500000001 cycles: 1695298915
+ DCM HITS:   11191592  MISSES:    3426176  COLD_MISSES:          0  HOT_MISSES:    3426176
+ DCM ACCESS_AMPLIFICATION: 1.52793  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== BEAR_WR_OPT__482.sphinx3-1522B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.498002 instructions: 500000002 cycles: 1004012654
+ DCM HITS:    6229842  MISSES:     165629  COLD_MISSES:      18891  HOT_MISSES:     146738
+ DCM ACCESS_AMPLIFICATION: 1.05403  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== NO_DRAM_CACHE__401.bzip2-277B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.875532 instructions: 500000003 cycles: 571081313
+===== NO_DRAM_CACHE__403.gcc-16B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.41154 instructions: 500000001 cycles: 1214949413
+===== NO_DRAM_CACHE__434.zeusmp-10B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 1.41569 instructions: 500000002 cycles: 353183879
+===== NO_DRAM_CACHE__437.leslie3d-273B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.693625 instructions: 500000001 cycles: 720850215
+===== NO_DRAM_CACHE__462.libquantum-1343B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.433936 instructions: 500000001 cycles: 1152244758
+===== NO_DRAM_CACHE__482.sphinx3-1522B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.653825 instructions: 500000002 cycles: 764731164
+===== ORACLE__401.bzip2-277B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.797121 instructions: 500000003 cycles: 627257121
+ DCM HITS:    2429525  MISSES:      87187  COLD_MISSES:      82368  HOT_MISSES:       4819
+ DCM ACCESS_AMPLIFICATION: 1.03786  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== ORACLE__403.gcc-16B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.372808 instructions: 500000001 cycles: 1341173492
+ DCM HITS:    4168254  MISSES:     889030  COLD_MISSES:      71553  HOT_MISSES:     817477
+ DCM ACCESS_AMPLIFICATION: 1.43712  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== ORACLE__434.zeusmp-10B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 1.23344 instructions: 500000002 cycles: 405369890
+ DCM HITS:     795590  MISSES:     460348  COLD_MISSES:      75990  HOT_MISSES:     384358
+ DCM ACCESS_AMPLIFICATION: 1.54869  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== ORACLE__437.leslie3d-273B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.548324 instructions: 500000001 cycles: 911870124
+ DCM HITS:    3897363  MISSES:     864154  COLD_MISSES:         94  HOT_MISSES:     864060
+ DCM ACCESS_AMPLIFICATION: 1.34772  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== ORACLE__462.libquantum-1343B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.310945 instructions: 500000001 cycles: 1608002642
+ DCM HITS:   11191592  MISSES:    3426176  COLD_MISSES:          0  HOT_MISSES:    3426176
+ DCM ACCESS_AMPLIFICATION: 1.3527  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]
+===== ORACLE__482.sphinx3-1522B.champsimtrace.xz.txt =====
+Warmup Instructions: 1000000000
+Simulation Instructions: 500000000
+CPU 0 cumulative IPC: 0.50276 instructions: 500000002 cycles: 994510937
+ DCM HITS:    6229842  MISSES:     165629  COLD_MISSES:      18891  HOT_MISSES:     146738
+ DCM ACCESS_AMPLIFICATION: 1.03037  (avg local+far sub-ops per request)
+ DCM RESIDUAL ORB: 0  CRB: 0  WB: 0  pendingNear: 0  pendingFar: 0  pendingResp: 0   [OK: fully drained]

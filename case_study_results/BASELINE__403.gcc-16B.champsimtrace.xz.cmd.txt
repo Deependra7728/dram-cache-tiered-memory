@@ -1,0 +1,1 @@
+./bin/champsim -warmup_instructions 100000000 -simulation_instructions 500000000 -traces /home/dpsingh/Desktop/ChampSim-master/dpc3_traces/403.gcc-16B.champsimtrace.xz

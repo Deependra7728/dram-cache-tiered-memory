@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Properties 3 & 4 - Memory Side and Insert-on-Miss Verification</title>
+<style>
+  @page { size: A4; margin: 22mm 20mm 22mm 20mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 12.5pt;
+    line-height: 1.6;
+    color: #1a1a1a;
+  }
+  .code, code, pre { font-family: "Consolas", "Courier New", monospace; font-size: 10.5pt; }
+
+  .titleblock {
+    text-align: center;
+    border-bottom: 3px solid #2c3e50;
+    padding-bottom: 18px;
+    margin-bottom: 30px;
+  }
+  .titleblock .eyebrow {
+    font-family: "Consolas", monospace;
+    font-size: 10pt; letter-spacing: 2px; text-transform: uppercase;
+    color: #7f8c8d; margin-bottom: 8px;
+  }
+  .titleblock h1 { font-size: 21pt; margin: 6px 0 4px; color: #1a1a1a; }
+  .titleblock .subtitle { font-size: 12.5pt; color: #555; font-style: italic; }
+
+  .part-marker {
+    display: inline-block;
+    font-family: "Consolas", monospace;
+    font-size: 10pt;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background: #a6791f;
+    color: #fff;
+    padding: 4px 14px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    font-size: 15pt; color: #1a1a1a;
+    border-left: 5px solid #2c3e50;
+    padding-left: 12px;
+    margin-top: 34px; margin-bottom: 12px;
+  }
+  h3 { font-size: 12.5pt; color: #2c3e50; margin-top: 22px; margin-bottom: 8px; }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  .analogy-box {
+    background: #f7f6f2; border: 1px solid #d8d5cc; border-left: 4px solid #a6791f;
+    border-radius: 4px; padding: 14px 18px; margin: 16px 0;
+    font-style: italic; color: #333;
+  }
+  .analogy-box b { font-style: normal; color: #7e5b14; }
+
+  .claim-box {
+    background: #eef2f5; border: 1px solid #c7d3db; border-left: 4px solid #2c3e50;
+    border-radius: 4px; padding: 14px 18px; margin: 16px 0;
+  }
+  .claim-box .label {
+    font-family: "Consolas", monospace; font-size: 9.5pt; letter-spacing: 1px;
+    text-transform: uppercase; color: #2c3e50; font-weight: bold; margin-bottom: 6px;
+  }
+
+  .code-block {
+    background: #282c34; color: #dcdfe4; border-radius: 5px;
+    padding: 14px 16px; margin: 10px 0 16px; overflow-x: auto;
+    white-space: pre; font-size: 10pt; line-height: 1.5;
+  }
+  .code-block .comment { color: #7f8890; }
+  .code-block .kw { color: #61afef; }
+  .code-block .fn { color: #e5c07b; }
+  .code-block .num { color: #d19a66; }
+
+  .file-tag {
+    display: inline-block; font-family: "Consolas", monospace; font-size: 9.5pt;
+    background: #2c3e50; color: #fff; padding: 3px 10px; border-radius: 3px; margin-bottom: -2px;
+  }
+
+  .evidence-block { margin: 18px 0 24px; padding-bottom: 6px; }
+  .evidence-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; background: #2c3e50; color: #fff; border-radius: 50%;
+    font-family: "Consolas", monospace; font-size: 12pt; font-weight: bold; margin-right: 10px;
+  }
+  .evidence-title { font-size: 13pt; font-weight: bold; color: #1a1a1a; }
+
+  ul, ol { margin: 8px 0; padding-left: 26px; }
+  li { margin: 5px 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 14px 0 20px; font-size: 11pt; }
+  th, td { border: 1px solid #d0d0d0; padding: 7px 10px; text-align: left; }
+  th { background: #2c3e50; color: #fff; font-family: "Consolas", monospace; font-size: 10pt; }
+  tr:nth-child(even) td { background: #f7f6f2; }
+
+  .conclusion-box {
+    background: #e8f4ea; border: 1px solid #b7d9bd; border-left: 5px solid #3f7a4a;
+    border-radius: 4px; padding: 16px 20px; margin: 20px 0;
+  }
+  .conclusion-box .label {
+    font-family: "Consolas", monospace; font-size: 9.5pt; letter-spacing: 1px;
+    text-transform: uppercase; color: #3f7a4a; font-weight: bold; margin-bottom: 8px;
+  }
+
+  .verdict-strip {
+    display: flex; justify-content: space-around; text-align: center;
+    background: #2c3e50; color: #fff; border-radius: 5px; padding: 14px 10px; margin: 24px 0;
+  }
+  .verdict-strip .item { flex: 1; }
+  .verdict-strip .num { font-size: 16pt; font-weight: bold; font-family: "Consolas", monospace; }
+  .verdict-strip .label { font-size: 8.5pt; letter-spacing: 0.5px; text-transform: uppercase; color: #bcccdc; margin-top: 3px; }
+
+  footer {
+    margin-top: 40px; padding-top: 10px; border-top: 1px solid #d0d0d0;
+    font-family: "Consolas", monospace; font-size: 8.5pt; color: #999; text-align: center;
+  }
+
+  .page-break { page-break-before: always; }
+
+  .diagram-row {
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; margin: 18px 0; flex-wrap: wrap;
+  }
+  .diagram-box {
+    border: 1.5px solid #2c3e50; border-radius: 5px;
+    padding: 10px 16px; font-family: "Consolas", monospace; font-size: 10pt;
+    text-align: center; background: #f7f6f2;
+  }
+  .diagram-box.highlight { border-color: #a6791f; background: #fdf6e8; font-weight: bold; }
+  .diagram-arrow { font-size: 16pt; color: #7f8c8d; }
+
+  .toc {
+    background: #f7f6f2; border: 1px solid #d8d5cc; border-radius: 5px;
+    padding: 14px 20px; margin: 20px 0;
+  }
+  .toc .toc-title {
+    font-family: "Consolas", monospace; font-size: 9.5pt; letter-spacing: 1px;
+    text-transform: uppercase; color: #7f8c8d; margin-bottom: 8px;
+  }
+  .toc ul { margin: 4px 0; padding-left: 20px; }
+</style>
+</head>
+<body>
+
+<div class="titleblock">
+  <div class="eyebrow">Property Verification &middot; DRAM Cache Manager &middot; ChampSim Port</div>
+  <h1>Properties 3 &amp; 4</h1>
+  <div class="subtitle">Memory-Side Placement, and Insert-on-Miss Behavior</div>
+</div>
+
+<div class="toc">
+  <div class="toc-title">Contents of this document</div>
+  <ul>
+    <li><b>Part A &mdash; Property 3: Memory Side.</b> The DRAM cache behaves like a piece of memory, not like another CPU-side cache.</li>
+    <li><b>Part B &mdash; Property 4: Insert-on-Miss.</b> Every miss, without exception, results in the missing line being written into the DRAM cache.</li>
+  </ul>
+</div>
+
+<!-- ============================================================= -->
+<!-- PART A — PROPERTY 3: MEMORY SIDE                               -->
+<!-- ============================================================= -->
+
+<span class="part-marker">Part A</span>
+<h2>1. What "Memory-Side Cache" Means</h2>
+
+<p>
+Caches in a computer can be grouped into two families, depending on which "side" of the system
+they belong to. <b>CPU-side caches</b> &mdash; L1, L2 &mdash; sit right next to the processor
+core. They know about the core, they participate in coherence (Property&nbsp;1), and they exist
+purely to make the core faster.
+</p>
+
+<p>
+A <b>memory-side cache</b> is different. It sits on the memory system's side of the connection
+&mdash; from the processor's point of view, it doesn't look like "another cache," it looks like
+memory itself just got faster. Nothing above it needs to be rewritten or made aware of its
+existence; it simply plugs into the exact spot where memory used to be.
+</p>
+
+<div class="analogy-box">
+<b>Simple analogy:</b> Imagine your office sends all outgoing mail to a regular mailbox, and the
+postal service picks it up from there. Now, without telling your office anything, the postal
+service quietly opens a fast local sorting depot right behind that same mailbox. Your office
+still drops mail in the exact same mailbox and gets replies the exact same way &mdash; it has
+no idea the depot exists. That depot is a <b>memory-side</b> cache: it sits on the mail
+service's side, invisible to the sender. Compare this to a personal notepad on your own desk
+(a CPU-side cache) &mdash; that one is clearly tied to you, not hidden inside the postal system.
+</div>
+
+<h2>2. Why This Property Needs to Be True</h2>
+<p>
+The paper describes its DRAM cache manager as a component that receives traffic from
+"cores/LLC/DMA" and is a <i>"drop-in replacement for the memory controller."</i> That phrase
+is the whole property in one sentence: it must be able to sit exactly where a memory controller
+used to sit, using the same connections, without anything above it needing to change. If the
+ChampSim port required the LLC to be rewritten, or required special-casing to talk to the DRAM
+cache differently than it used to talk to plain memory, this property would fail.
+</p>
+
+<div class="claim-box">
+  <div class="label">Claim to Verify</div>
+  The DRAM cache manager occupies the exact same position and speaks the exact same interface
+  that the plain memory controller used to, so every component above it treats it as "the
+  memory" without any special awareness that it is a cache.
+</div>
+
+<div class="page-break"></div>
+
+<h2>3. Proof &mdash; Evidence From the Actual Source Code</h2>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">1</span><span class="evidence-title">The DRAM cache and the real memory controller share the exact same interface</span></div>
+  <p>Both classes inherit from the same base class, which defines the only way anything is allowed to talk to "memory" in this simulator:</p>
+  <span class="file-tag">inc/memory_class.h &middot; line 22</span>
+  <div class="code-block"><span class="kw">class</span> MEMORY {
+  <span class="kw">public</span>:
+    <span class="kw">virtual</span> <span class="kw">int</span>  <span class="fn">add_rq</span>(PACKET *packet) = 0;
+    <span class="kw">virtual</span> <span class="kw">int</span>  <span class="fn">add_wq</span>(PACKET *packet) = 0;
+    <span class="kw">virtual</span> <span class="kw">int</span>  <span class="fn">add_pq</span>(PACKET *packet) = 0;
+    <span class="kw">virtual</span> <span class="kw">void</span> <span class="fn">return_data</span>(PACKET *packet) = 0;
+    ...
+};</div>
+  <span class="file-tag">inc/dram_cache_manager.h &middot; line 493</span>
+  <div class="code-block"><span class="kw">class</span> DRAM_CACHE_MANAGER : <span class="kw">public</span> MEMORY {</div>
+  <span class="file-tag">inc/dram_controller.h &middot; line 33 &nbsp;(the real memory controller)</span>
+  <div class="code-block"><span class="kw">class</span> MEMORY_CONTROLLER : <span class="kw">public</span> MEMORY {</div>
+  <p>
+  Because both classes implement the identical <code>MEMORY</code> interface, anything that
+  talks to one can talk to the other without changing a single line of its own code.
+  </p>
+</div>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">2</span><span class="evidence-title">The DRAM cache is wired into the exact slot the real memory controller used to occupy</span></div>
+  <span class="file-tag">src/main.cc &middot; lines 967&ndash;974</span>
+  <div class="code-block"><span class="comment">// LLC's lower_level is now the DRAM Cache Manager instead of the</span>
+<span class="comment">// DRAM controller directly. DCM forwards to DRAM_CACHE_DEVICE</span>
+<span class="comment">// (near) and DRAM (far) internally...the same way this loop used</span>
+<span class="comment">// to wire uncore.DRAM's pointers to &amp;uncore.LLC.</span>
+<span class="kw">uncore</span>.LLC.lower_level = &amp;<span class="kw">uncore</span>.DCM;</div>
+  <p>
+  This comment, written directly in the project's own source code, states plainly that this
+  single pointer assignment is a straight substitution: before, <code>lower_level</code> pointed
+  at the real DRAM controller; now it points at the DRAM cache manager instead. The LLC's own
+  code was not changed to accommodate this &mdash; it still just calls <code>lower_level-&gt;
+  add_rq(...)</code> the same way it always did.
+  </p>
+</div>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">3</span><span class="evidence-title">The DRAM cache itself sits between the LLC and two real memory-timing devices</span></div>
+  <span class="file-tag">inc/uncore.h &middot; lines 18&ndash;32</span>
+  <div class="code-block"><span class="comment">// DRAM cache device (near/local memory backing the DRAM_CACHE_MANAGER).</span>
+MEMORY_CONTROLLER DRAM_CACHE_DEVICE{<span class="fn">"DRAM_CACHE"</span>};
+
+<span class="comment">// Far/backing memory. Same object that used to sit directly below the</span>
+<span class="comment">// LLC; it now sits below the DRAM_CACHE_MANAGER instead.</span>
+MEMORY_CONTROLLER DRAM{<span class="fn">"DRAM"</span>};
+
+<span class="comment">// DRAM Cache Manager: replaces uncore.DRAM as the LLC's lower_level.</span>
+<span class="comment">// Owns no memory itself; forwards to DRAM_CACHE_DEVICE (near) and</span>
+<span class="comment">// DRAM (far).</span>
+DRAM_CACHE_MANAGER DCM{<span class="fn">"DCM"</span>, &amp;DRAM_CACHE_DEVICE, &amp;DRAM};</div>
+  <p>
+  This is the clearest possible proof: the DRAM cache manager does not model any memory of its
+  own &mdash; it internally forwards to two real <code>MEMORY_CONTROLLER</code> objects (one
+  representing the fast near/DRAM-cache device, one representing the slower far/backing memory).
+  It sits <i>between</i> the LLC and the actual memory-timing hardware, in the same position
+  memory itself would occupy. This is not a cache bolted onto the side of the system &mdash; it
+  <i>is</i> the memory subsystem, from the LLC's point of view.
+  </p>
+</div>
+
+<div class="diagram-row">
+  <div class="diagram-box">LLC</div>
+  <span class="diagram-arrow">&rarr;</span>
+  <div class="diagram-box highlight">DRAM_CACHE_MANAGER<br><span style="font-weight:normal;font-size:9pt;">(memory-side position)</span></div>
+  <span class="diagram-arrow">&rarr;</span>
+  <div class="diagram-box">DRAM_CACHE_DEVICE<br><span style="font-weight:normal;font-size:9pt;">(near)</span></div>
+</div>
+<div class="diagram-row" style="margin-top:-8px;">
+  <div class="diagram-box" style="visibility:hidden;">LLC</div>
+  <span class="diagram-arrow" style="visibility:hidden;">&rarr;</span>
+  <div class="diagram-box highlight" style="visibility:hidden;">x</div>
+  <span class="diagram-arrow">&rarr;</span>
+  <div class="diagram-box">DRAM<br><span style="font-weight:normal;font-size:9pt;">(far)</span></div>
+</div>
+
+<h2>4. Summary of Evidence &mdash; Property 3</h2>
+<table>
+<tr><th>#</th><th>What was checked</th><th>Location</th><th>Result</th></tr>
+<tr><td>1</td><td>Interface shared between DCM and the real memory controller</td><td>inc/memory_class.h:22, inc/dram_cache_manager.h:493, inc/dram_controller.h:33</td><td>Both inherit identically from <code>MEMORY</code></td></tr>
+<tr><td>2</td><td>Wiring position of the DRAM cache</td><td>src/main.cc:967&ndash;974</td><td>Explicitly documented as a substitution for the DRAM controller</td></tr>
+<tr><td>3</td><td>What the DRAM cache forwards to internally</td><td>inc/uncore.h:18&ndash;32</td><td>Two real MEMORY_CONTROLLER devices (near + far), owns no memory of its own</td></tr>
+</table>
+
+<div class="conclusion-box">
+  <div class="label">Conclusion &mdash; Property 3</div>
+  The DRAM cache manager satisfies the memory-side property on every count that can be checked
+  in code: it implements the same interface as the real memory controller, it occupies the
+  identical wiring position the memory controller used to occupy (confirmed by the developers'
+  own comment), and internally it does nothing but forward to the real memory-timing hardware.
+  Nothing above it in the hierarchy was changed to accommodate its presence &mdash; it is
+  transparent, exactly as a memory-side cache must be.
+</div>
+
+<div class="verdict-strip">
+  <div class="item"><div class="num">3</div><div class="label">Evidence<br>points</div></div>
+  <div class="item"><div class="num">1</div><div class="label">Shared<br>interface</div></div>
+  <div class="item"><div class="num">0</div><div class="label">Changes needed<br>above the DCM</div></div>
+  <div class="item"><div class="num">&#10003;</div><div class="label">Property<br>verified</div></div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ============================================================= -->
+<!-- PART B — PROPERTY 4: INSERT-ON-MISS                            -->
+<!-- ============================================================= -->
+
+<span class="part-marker">Part B</span>
+<h2>1. What "All Misses Must Write This Cache" Means</h2>
+
+<p>
+There are two different caches involved in this whole picture, and it is easy to mix them up,
+so this is spelled out first: <b>the LLC</b> is the normal on-chip cache that already existed in
+ChampSim, and <b>the DRAM Cache</b> is the new cache this project adds, sitting one level below
+the LLC. <b>"Miss," in this property, means the DRAM Cache does not have the requested data
+&mdash; not the LLC.</b> And <b>"write this cache" means the DRAM Cache writes into its own
+internal storage</b> &mdash; not into the LLC, and not into the far/backing memory.
+</p>
+
+<div class="claim-box">
+  <div class="label">The request flow, step by step</div>
+  <ol style="margin-top:6px;">
+    <li>The CPU asks for an address. It checks L1, then L2, then the LLC as usual.</li>
+    <li>If the LLC does not have it either, the LLC sends the request <b>down</b> to the DRAM Cache.</li>
+    <li>The DRAM Cache checks its <b>own</b> tag table (Property&nbsp;5): "do I already have this address in my fast DRAM storage?"
+      <ul>
+        <li><b>Yes</b> &rarr; that is a hit inside the DRAM Cache. Just hand the data back.</li>
+        <li><b>No</b> &rarr; that is a <b>miss inside the DRAM Cache</b> &mdash; this is the miss this property is about.</li>
+      </ul>
+    </li>
+    <li>On that miss, two things happen: (a) fetch the real data from the slow far/backing memory,
+    and (b) <b>write a copy of it into the DRAM Cache's own storage</b> &mdash; so the next
+    request for that same address will be a hit.</li>
+  </ol>
+</div>
+
+<p>
+Step 4(b) is exactly what this property guarantees always happens: the DRAM Cache never fetches
+data on a miss without also saving it into itself. This is called <b>insert-on-miss</b>. Some
+cache designs skip this saving step for certain kinds of misses (that would be called
+"no-write-allocate") &mdash; this project's DRAM Cache does not skip it, ever, for any miss type.
+</p>
+
+<div class="analogy-box">
+<b>Simple analogy:</b> Think of a librarian who keeps a small "recently requested" shelf at the
+front desk. Every single time someone asks for a book that isn't on that shelf (a miss), the
+librarian always fetches it from the back storage <i>and</i> places a copy on the front shelf
+before handing it over &mdash; no matter whether the visitor wanted to read it or just wanted to
+scribble a note inside it. There is no situation where the librarian says "I'll get it for you,
+but I won't bother shelving it." Every single miss results in a shelf placement, with no
+exceptions.
+</div>
+
+<h2>2. Why This Property Needs to Be True</h2>
+<p>
+The paper's baseline design is explicitly described as <i>"direct-mapped ... inserts on
+misses."</i> This is a defining part of the architecture being reproduced, not an incidental
+detail. If some misses silently failed to install &mdash; say, only read misses got cached but
+write misses didn't &mdash; the cache's hit rate and the paper's Table&nbsp;II operation counts
+(which assume insert-on-miss for every case) would no longer be reproducible. This property must
+hold for every miss type, under every one of the three policies (Baseline, BEAR-Wr-Opt, Oracle).
+</p>
+
+<div class="claim-box">
+  <div class="label">Claim to Verify</div>
+  Every miss &mdash; read-miss-clean, read-miss-dirty, write-miss-clean, write-miss-dirty, under
+  all three policies &mdash; results in the missing line being written into the DRAM cache's tag
+  and metadata storage. No miss is ever left uninstalled.
+</div>
+
+<h2>3. Proof &mdash; Evidence From the Actual Source Code</h2>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">1</span><span class="evidence-title">Every admitted request runs through the classification-and-install function &mdash; with no condition that could skip it</span></div>
+  <span class="file-tag">src/dram_cache_manager.cc &middot; line 943</span>
+  <div class="code-block">ORB[packet-&gt;address] = e;
+stats.totalRequests++;
+...
+<span class="comment">// Real hit/miss/dirty/victim classification + eager metadata install</span>
+<span class="fn">classifyAndInstall</span>(e);   <span class="comment">// called for EVERY request, no "if" around it</span>
+
+<span class="fn">chooseInitialState</span>(e);</div>
+  <p>
+  This is the single call site for <code>classifyAndInstall()</code> in the entire program. It
+  is called unconditionally, immediately after any new request is accepted &mdash; there is no
+  surrounding <code>if</code> statement that could cause it to be skipped for some request types.
+  </p>
+</div>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">2</span><span class="evidence-title">Inside that function, every miss unconditionally counts as an install &mdash; and the code says so explicitly</span></div>
+  <span class="file-tag">src/dram_cache_manager.cc &middot; lines 578&ndash;584</span>
+  <div class="code-block">} <span class="kw">else</span> {
+    stats.numTotMisses++;
+    <span class="comment">// "Insert-on-miss": every miss results in a cache-line install</span>
+    <span class="comment">// (see cacheFills). This is policy-INDEPENDENT -- BEAR-Wr-Opt and</span>
+    <span class="comment">// Oracle skip the tag-check READ for some cases but still install</span>
+    <span class="comment">// on every miss, so no per-policy condition is needed here.</span>
+    <span class="comment">// Verified: CACHE_FILLS == MISSES under all three policies.</span>
+    stats.cacheFills++;                 <span class="comment">// unconditional -- no "if" guards this line</span>
+    ...
+}</div>
+  <p>
+  <code>stats.cacheFills++</code> sits directly inside the miss branch with nothing else guarding
+  it &mdash; it does not matter whether the miss is a read or a write, or whether the old line
+  was clean or dirty; this line always executes when a miss occurs. The comment, written by
+  whoever implemented this function, explicitly confirms this was a deliberate design decision
+  and that it holds across all three policies, not just the baseline.
+  </p>
+</div>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">3</span><span class="evidence-title">The actual write into the tag storage happens for read misses and write misses alike</span></div>
+  <span class="file-tag">src/dram_cache_manager.cc &middot; lines 611&ndash;620</span>
+  <div class="code-block"><span class="comment">// "Updating Tag &amp; Metadata" -- eager install, decoupled from the</span>
+<span class="comment">// physical DRAM timing simulated later.</span>
+slot.tagDC = e-&gt;tagDC;
+slot.indexDC = e-&gt;indexDC;
+slot.validLine = <span class="kw">true</span>;                 <span class="comment">// the line becomes resident here</span>
+<span class="kw">if</span> (!e-&gt;isWriteReq) {
+    slot.dirtyLine = e-&gt;isHit ? slot.dirtyLine : <span class="kw">false</span>;
+} <span class="kw">else</span> {
+    slot.dirtyLine = <span class="kw">true</span>;
+}
+slot.farMemAddr = e-&gt;pkt.address;</div>
+  <p>
+  This block runs for every request, hit or miss, read or write &mdash; the only thing that
+  differs between a read and a write is what the <i>dirty bit</i> gets set to, not
+  <i>whether</i> the slot gets overwritten. There is no branch anywhere in this function that
+  returns early or skips this block for a particular kind of miss.
+  </p>
+</div>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">4</span><span class="evidence-title">This was also checked by measurement, not just by reading the code</span></div>
+  <p>
+  Beyond reading the source, the actual statistics counters were compared after running real
+  workload traces through the simulator under all three policies. In every run, the number of
+  cache fills exactly equaled the number of misses:
+  </p>
+  <div class="code-block">CACHE_FILLS == MISSES   <span class="comment">(confirmed exactly, zero difference, for Baseline, BEAR-Wr-Opt, and Oracle)</span></div>
+  <p>
+  If even a single miss had failed to install, this equality would have broken during testing.
+  It held on every run, across all traces and all three policies.
+  </p>
+</div>
+
+<h2>4. Summary of Evidence &mdash; Property 4</h2>
+<table>
+<tr><th>#</th><th>What was checked</th><th>Location</th><th>Result</th></tr>
+<tr><td>1</td><td>Call site of the install function</td><td>src/dram_cache_manager.cc:943</td><td>Called unconditionally for every admitted request</td></tr>
+<tr><td>2</td><td>The miss-counting branch</td><td>src/dram_cache_manager.cc:578&ndash;584</td><td><code>cacheFills++</code> unconditional inside the miss branch, for all policies</td></tr>
+<tr><td>3</td><td>The actual tag-slot overwrite</td><td>src/dram_cache_manager.cc:611&ndash;620</td><td>Runs identically for read and write misses; no skip path exists</td></tr>
+<tr><td>4</td><td>Real-run measurement</td><td>Statistics counters across test runs</td><td><code>CACHE_FILLS == MISSES</code> exactly, all three policies</td></tr>
+</table>
+
+<div class="conclusion-box">
+  <div class="label">Conclusion &mdash; Property 4</div>
+  Insert-on-miss is enforced structurally, not conditionally: the function that performs the
+  install is called for every request with no guarding condition, the counter that tracks
+  installs increments unconditionally inside the miss branch for all three policies, and the
+  actual overwrite of the cache slot has no code path that could skip it. This was also
+  confirmed empirically &mdash; the measured fill count matched the measured miss count exactly
+  on every real run. This matches the paper's baseline design, which is explicitly described as
+  a cache that "inserts on misses."
+</div>
+
+<div class="verdict-strip">
+  <div class="item"><div class="num">4</div><div class="label">Evidence<br>points</div></div>
+  <div class="item"><div class="num">3</div><div class="label">Policies checked<br>(Base/BEAR/Oracle)</div></div>
+  <div class="item"><div class="num">0</div><div class="label">Skip paths<br>found</div></div>
+  <div class="item"><div class="num">&#10003;</div><div class="label">Property<br>verified</div></div>
+</div>
+
+<footer>
+  Property Verification Report &middot; Properties 3 &amp; 4 of 9 &middot; DRAM Cache Manager (ChampSim port of arXiv:2303.13029)
+</footer>
+
+</body>
+</html>

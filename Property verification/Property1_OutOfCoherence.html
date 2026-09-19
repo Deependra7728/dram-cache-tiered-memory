@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Property 1 - Out of Coherence Verification</title>
+<style>
+  @page {
+    size: A4;
+    margin: 22mm 20mm 22mm 20mm;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Georgia", "Times New Roman", serif;
+    font-size: 12.5pt;
+    line-height: 1.6;
+    color: #1a1a1a;
+    max-width: 100%;
+  }
+  .code, code, pre {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 10.5pt;
+  }
+
+  /* ---- Title block ---- */
+  .titleblock {
+    text-align: center;
+    border-bottom: 3px solid #2c3e50;
+    padding-bottom: 18px;
+    margin-bottom: 30px;
+  }
+  .titleblock .eyebrow {
+    font-family: "Consolas", monospace;
+    font-size: 10pt;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #7f8c8d;
+    margin-bottom: 8px;
+  }
+  .titleblock h1 {
+    font-size: 22pt;
+    margin: 6px 0 4px;
+    color: #1a1a1a;
+  }
+  .titleblock .subtitle {
+    font-size: 12.5pt;
+    color: #555;
+    font-style: italic;
+  }
+
+  h2 {
+    font-size: 15pt;
+    color: #1a1a1a;
+    border-left: 5px solid #2c3e50;
+    padding-left: 12px;
+    margin-top: 34px;
+    margin-bottom: 12px;
+  }
+  h3 {
+    font-size: 12.5pt;
+    color: #2c3e50;
+    margin-top: 22px;
+    margin-bottom: 8px;
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  .analogy-box {
+    background: #f7f6f2;
+    border: 1px solid #d8d5cc;
+    border-left: 4px solid #a6791f;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-style: italic;
+    color: #333;
+  }
+  .analogy-box b { font-style: normal; color: #7e5b14; }
+
+  .claim-box {
+    background: #eef2f5;
+    border: 1px solid #c7d3db;
+    border-left: 4px solid #2c3e50;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 16px 0;
+  }
+  .claim-box .label {
+    font-family: "Consolas", monospace;
+    font-size: 9.5pt;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #2c3e50;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .code-block {
+    background: #282c34;
+    color: #dcdfe4;
+    border-radius: 5px;
+    padding: 14px 16px;
+    margin: 10px 0 16px;
+    overflow-x: auto;
+    white-space: pre;
+    font-size: 10pt;
+    line-height: 1.5;
+  }
+  .code-block .comment { color: #7f8890; }
+  .code-block .kw { color: #61afef; }
+  .code-block .fn { color: #e5c07b; }
+
+  .file-tag {
+    display: inline-block;
+    font-family: "Consolas", monospace;
+    font-size: 9.5pt;
+    background: #2c3e50;
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin-bottom: -2px;
+  }
+
+  .evidence-block {
+    margin: 18px 0 24px;
+    padding-bottom: 6px;
+  }
+  .evidence-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    background: #2c3e50;
+    color: #fff;
+    border-radius: 50%;
+    font-family: "Consolas", monospace;
+    font-size: 12pt;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  .evidence-title {
+    font-size: 13pt;
+    font-weight: bold;
+    color: #1a1a1a;
+  }
+
+  ul, ol { margin: 8px 0; padding-left: 26px; }
+  li { margin: 5px 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 20px;
+    font-size: 11pt;
+  }
+  th, td {
+    border: 1px solid #d0d0d0;
+    padding: 7px 10px;
+    text-align: left;
+  }
+  th {
+    background: #2c3e50;
+    color: #fff;
+    font-family: "Consolas", monospace;
+    font-size: 10pt;
+  }
+  tr:nth-child(even) td { background: #f7f6f2; }
+
+  .conclusion-box {
+    background: #e8f4ea;
+    border: 1px solid #b7d9bd;
+    border-left: 5px solid #3f7a4a;
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin: 20px 0;
+  }
+  .conclusion-box .label {
+    font-family: "Consolas", monospace;
+    font-size: 9.5pt;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #3f7a4a;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .verdict-strip {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    background: #2c3e50;
+    color: #fff;
+    border-radius: 5px;
+    padding: 14px 10px;
+    margin: 24px 0;
+  }
+  .verdict-strip .item { flex: 1; }
+  .verdict-strip .num { font-size: 16pt; font-weight: bold; font-family: "Consolas", monospace; }
+  .verdict-strip .label { font-size: 8.5pt; letter-spacing: 0.5px; text-transform: uppercase; color: #bcccdc; margin-top: 3px; }
+
+  footer {
+    margin-top: 40px;
+    padding-top: 10px;
+    border-top: 1px solid #d0d0d0;
+    font-family: "Consolas", monospace;
+    font-size: 8.5pt;
+    color: #999;
+    text-align: center;
+  }
+
+  .page-break { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<div class="titleblock">
+  <div class="eyebrow">Property Verification &middot; DRAM Cache Manager &middot; ChampSim Port</div>
+  <h1>Property 1: Out-of-Coherence</h1>
+  <div class="subtitle">Verifying that the DRAM cache is not part of the on-chip cache coherence protocol</div>
+</div>
+
+<h2>1. What "Out of Coherence" Means</h2>
+
+<p>
+In a normal system, a CPU has multiple small caches (L1, L2, and often a shared Last-Level
+Cache, or LLC) sitting close to the processor. When one core modifies a piece of data, every
+other cache that might be holding an old copy of that same data needs to be told about it.
+This "keeping everyone in sync" mechanism is called <b>cache coherence</b> (protocols like
+MESI implement it).
+</p>
+
+<p>
+A cache that is <b>out of coherence</b> is simply not part of this synchronization system.
+It does not send "I changed this" messages, and it does not receive "forget this, it changed"
+messages from anyone else. It just sits there answering a simple question &mdash; "do you have
+this address or not?" &mdash; with no coordination with the rest of the system.
+</p>
+
+<div class="analogy-box">
+<b>Simple analogy:</b> Imagine an office where a few people share one whiteboard (this is like
+L1, L2, and the LLC). If someone erases something on the whiteboard, everyone in that room
+needs to be told, otherwise someone keeps working from outdated information &mdash; that
+"telling everyone" is coherence.
+<br><br>
+Now imagine there is a photocopier sitting in the basement (this is the DRAM cache). Nobody in
+the office shouts down to the basement to say "erase your copy too," and the person in the
+basement never shouts back up either. The photocopier just answers "yes I have a copy of this
+page" or "no I don't" whenever someone brings a request down to it. That is exactly what
+"out of coherence" means for the DRAM cache &mdash; it is not part of the whiteboard-and-shouting
+system at all.
+</div>
+
+<h2>2. Why This Property Needs to Be True</h2>
+<p>
+The paper this project is based on (Babaie, Akram &amp; Lowe-Power, ISPASS&nbsp;2023) explicitly
+describes its DRAM cache manager as sitting <i>"not in the on-chip coherence domain"</i> and
+as a <i>"drop-in replacement for the memory controller."</i> In other words, the design
+intentionally places this cache on the memory side of the system, below where coherence is
+handled, not inside it. If the ChampSim port secretly required coherence traffic to function
+correctly, it would not be a faithful implementation of the paper's architecture. This
+property must therefore be verified directly from the source code, not assumed.
+</p>
+
+<div class="claim-box">
+  <div class="label">Claim to Verify</div>
+  The DRAM cache manager (<code>DRAM_CACHE_MANAGER</code>) neither sends nor receives any
+  cache-coherence messages (invalidations, snoops, or shared/exclusive state changes). It sits
+  entirely below the on-chip coherence domain and functions purely as a memory-side device.
+</div>
+
+<div class="page-break"></div>
+
+<h2>3. Proof &mdash; Evidence From the Actual Source Code</h2>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">1</span><span class="evidence-title">The DRAM cache is wired below the Last-Level Cache, not among the on-chip caches</span></div>
+  <p>
+  The DRAM cache is connected into the memory hierarchy as the LLC's <code>lower_level</code>
+  &mdash; the exact same wiring slot that used to hold the plain memory controller before this
+  project's changes:
+  </p>
+  <span class="file-tag">src/main.cc &middot; line 974</span>
+  <div class="code-block"><span class="kw">uncore</span>.LLC.lower_level = &amp;<span class="kw">uncore</span>.DCM;</div>
+  <p>
+  Everything above the LLC &mdash; L1 Instruction cache, L1 Data cache, L2 cache, and the LLC
+  itself &mdash; forms the on-chip coherence domain. The DRAM cache sits one level below all of
+  them, on the memory side of the system, exactly where the paper places it.
+  </p>
+</div>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">2</span><span class="evidence-title">The only "forget this" mechanism in the whole simulator stops one level above the DRAM cache</span></div>
+  <p>
+  ChampSim has exactly one function whose job is to tell a cache to erase an entry:
+  <code>CACHE::invalidate_entry()</code>.
+  </p>
+  <span class="file-tag">src/cache.cc &middot; line 1151</span>
+  <div class="code-block"><span class="kw">int</span> CACHE::<span class="fn">invalidate_entry</span>(uint64_t inval_addr)
+{
+    <span class="comment">// finds the matching entry in this cache and marks it invalid</span>
+    ...
+}</div>
+  <p>
+  This function is called from exactly one place in the entire codebase &mdash; when the
+  operating system reuses a virtual memory page, every cache that might hold stale data from
+  that page is told to forget it, one by one:
+  </p>
+  <span class="file-tag">src/main.cc &middot; lines 533&ndash;541</span>
+  <div class="code-block"><span class="kw">ooo_cpu</span>[cpu].ITLB.invalidate_entry(NRU_vpage);
+<span class="kw">ooo_cpu</span>[cpu].DTLB.invalidate_entry(NRU_vpage);
+<span class="kw">ooo_cpu</span>[cpu].STLB.invalidate_entry(NRU_vpage);
+<span class="kw">ooo_cpu</span>[cpu].L1I.invalidate_entry(cl_addr);
+<span class="kw">ooo_cpu</span>[cpu].L1D.invalidate_entry(cl_addr);
+<span class="kw">ooo_cpu</span>[cpu].L2C.invalidate_entry(cl_addr);
+<span class="kw">uncore</span>.LLC.invalidate_entry(cl_addr);   <span class="comment">// the list ends HERE</span></div>
+  <p>
+  Notice this list is exhaustive &mdash; it walks through every single on-chip cache: both
+  TLBs, the shared TLB, L1 Instruction, L1 Data, L2, and finally the LLC. There is
+  <b>no eighth line</b> reading <code>uncore.DCM.invalidate_entry(cl_addr)</code> anywhere in
+  the code. The DRAM cache is not an oversight that got skipped by accident &mdash; it is simply
+  absent from the list of caches that participate in this mechanism.
+  </p>
+</div>
+
+<div class="evidence-block">
+  <div><span class="evidence-num">3</span><span class="evidence-title">The DRAM cache class has no coherence machinery at all &mdash; even if a message were sent, there is nowhere for it to arrive</span></div>
+  <p>
+  A full text search was run across the DRAM cache manager's header and implementation files
+  for every keyword associated with coherence:
+  </p>
+  <span class="file-tag">grep search across inc/dram_cache_manager.h and src/dram_cache_manager.cc</span>
+  <div class="code-block">grep -in <span class="comment">"snoop\|probe\|MESI\|coherence\|invalidate"</span> \
+     inc/dram_cache_manager.h src/dram_cache_manager.cc
+
+<span class="comment">&rarr; 0 matches in both files</span></div>
+  <p>
+  The class declaration itself:
+  </p>
+  <span class="file-tag">inc/dram_cache_manager.h &middot; line 493</span>
+  <div class="code-block"><span class="kw">class</span> DRAM_CACHE_MANAGER : <span class="kw">public</span> MEMORY {</div>
+  <p>
+  <code>DRAM_CACHE_MANAGER</code> does not implement an <code>invalidate_entry()</code>
+  function, does not track shared/exclusive/modified state, and has no snoop-handling code of
+  any kind. This is not "the message gets ignored" &mdash; there is no mailbox for such a
+  message to be delivered to in the first place.
+  </p>
+</div>
+
+<div class="page-break"></div>
+
+<h2>4. Summary of Evidence</h2>
+
+<table>
+<tr><th>#</th><th>What was checked</th><th>Location</th><th>Result</th></tr>
+<tr><td>1</td><td>Where the DRAM cache is wired into the pipeline</td><td>src/main.cc:974</td><td>Below the LLC, on the memory side</td></tr>
+<tr><td>2</td><td>The one invalidation mechanism in the simulator</td><td>src/cache.cc:1151, src/main.cc:533&ndash;541</td><td>Exhaustively covers ITLB/DTLB/STLB/L1I/L1D/L2C/LLC; DRAM cache absent from the list</td></tr>
+<tr><td>3</td><td>Coherence-related code inside the DRAM cache class itself</td><td>inc/dram_cache_manager.h, src/dram_cache_manager.cc</td><td>Zero matches for snoop / probe / MESI / coherence / invalidate</td></tr>
+</table>
+
+<div class="conclusion-box">
+  <div class="label">Conclusion</div>
+  The absence of coherence participation is <b>structural</b>, not a coincidence of how the
+  simulator happened to be tested. Two independent facts prove this: (a) the only invalidation
+  mechanism that exists in ChampSim is enumerated explicitly, cache by cache, and stops one
+  level above the DRAM cache, and (b) the DRAM cache class itself provides no method that could
+  even receive such a message. Both the sending side and the receiving side of coherence
+  traffic are verifiably absent for the DRAM cache manager.
+  <br><br>
+  This matches the reference design described in Babaie, Akram &amp; Lowe-Power (ISPASS 2023),
+  which explicitly states the DRAM cache manager is placed <i>"not in the on-chip coherence
+  domain"</i> and is intended as a <i>"drop-in replacement for the memory controller."</i>
+  The ChampSim port satisfies this property exactly as specified.
+</div>
+
+<div class="verdict-strip">
+  <div class="item"><div class="num">3</div><div class="label">Independent<br>evidence points</div></div>
+  <div class="item"><div class="num">0</div><div class="label">Coherence calls<br>found in DCM</div></div>
+  <div class="item"><div class="num">7 / 7</div><div class="label">On-chip caches<br>correctly excluded</div></div>
+  <div class="item"><div class="num">&#10003;</div><div class="label">Property<br>verified</div></div>
+</div>
+
+<footer>
+  Property Verification Report &middot; Property 1 of 9 &middot; DRAM Cache Manager (ChampSim port of arXiv:2303.13029)
+</footer>
+
+</body>
+</html>
