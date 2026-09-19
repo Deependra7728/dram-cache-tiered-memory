@@ -46,12 +46,12 @@ multi-TU ChampSim. This matters because:
 | `locReqPort` → local `MemCtrl`/`HBMCtrl` | `nearMC` → a `MEMORY_CONTROLLER` instance (DRAM cache device) |
 | `farReqPort` → far `MemCtrl` | `farMC` → a second, independent `MEMORY_CONTROLLER` instance (backing store) |
 | `ORB` : `std::map<Addr, reqBufferEntry*>` | `ORB` : `std::map<uint64_t, DCM_ORB_ENTRY*>`, keyed by `PACKET::address` |
-| `CRB` : `std::vector<std::pair<Tick, PacketPtr>>` | `CRB` : `std::vector<DCM_CRB_ENTRY>` (declared in skeleton; not yet functional — see `next_task.md`) |
+| `CRB` : `std::vector<std::pair<Tick, PacketPtr>>` | `CRB` : `std::vector<DCM_CRB_ENTRY>` (declared in skeleton; not yet functional — see `project_status.md`) |
 | `pktFarMemWrite` (WB buffer) | `WB` : `std::deque<DCM_WB_ENTRY>` (declared in skeleton; not yet functional) |
 | `tagMetaStoreEntry` / `tagMetadataStore` | `DCM_TAG_ENTRY` / `tagMetadataStore` (allocated in skeleton, not yet consulted for hit/miss) |
 | `reqState` enum (`start`, `locMemRead`, ...) | `DCM_REQ_STATE` enum, same stages, renamed |
 | `enums::Policy` (`CascadeLakeNoPartWrs`, `BearWriteOpt`, `RambusHypo`) | `DCM_POLICY` (`DCM_POLICY_BASELINE_CASCADE_LAKE`, `DCM_POLICY_BEAR_WR_OPT`, `DCM_POLICY_ORACLE`) |
-| `recvTimingReq` (admission + ORB/CRB backpressure) | `add_rq`/`add_wq` (skeleton only checks ORB size so far; CRB/WB pressure checks are next_task) |
+| `recvTimingReq` (admission + ORB/CRB backpressure) | `add_rq`/`add_wq` (skeleton only checks ORB size so far; CRB/WB pressure checks are tracked in project_status.md) |
 | ports call back via `locMemRecvTimingResp`/`farMemRecvTimingResp` (two distinct functions, one per port) | single `DRAM_CACHE_MANAGER::return_data(PACKET*)`, disambiguated by looking up `ORB[addr]->state` — see "Deliberate adaptations" below |
 
 ## Confirmed gem5 behavioral facts (read directly from `policy_manager.cc`)
@@ -83,7 +83,7 @@ These are used to keep the ChampSim port honest, not invented:
    admit (`policy_manager.cc:296-366`). **UPDATE (this stage): the
    conflict-by-index check and CRB-full check are now ported** (see
    "ORB/CRB conflict handling" below). WB-buffer admission pressure is
-   still a `next_task.md` item (WB buffer itself is still inert).
+   still a `project_status.md` item (WB buffer itself is still inert).
 4. **Conflict is checked only against the ORB, not the CRB**
    (`checkConflictInDramCache`, `policy_manager.cc:1447-1460`): a new
    request conflicts if some *ORB* entry already occupies its DRAM-cache
@@ -113,7 +113,7 @@ These are used to keep the ChampSim port honest, not invented:
    which steps skip the local tag-check read (`BearWriteOpt` skips it for
    write hits only; `RambusHypo`/Oracle skips it for write hits *and*
    clean misses, deciding hit/dirty *before* state `start` even runs).
-   None of the three per-policy tables are ported yet (`next_task.md`).
+   None of the three per-policy tables are ported yet (`project_status.md`).
 7. **RESOLVED this stage: eager metadata update + tag-check-completion
    write-back trigger.** Re-read `handleRequestorPkt`
    (`policy_manager.cc:1345-1444`) and `locMemRecvTimingResp`
@@ -192,7 +192,7 @@ provably unchanged (verified: pre- and post-fix trace runs produce the
 same instruction/cycle counts up to the CRB-conflict-serialization
 difference described in `implementation_status.md`). Actually giving
 `nearMC`/`farMC` *different* real values (HBM2 vs DDR4/NVM profiles) is
-deliberately deferred — see `next_task.md` — this fix only resolves the
+deliberately deferred — see `project_status.md` — this fix only resolves the
 *mechanism*, verified in `tests/test_dcm_skeleton.cc` Test 4 by giving two
 fresh controllers deliberately different timing and confirming they
 complete at different, independent speeds.

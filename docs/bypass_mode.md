@@ -257,7 +257,7 @@ the comparison are apples-to-apples.
 **This alone does not run Case Study 1/2** — it provides the mechanism
 the case studies need, but running the actual GAPBS/NPB-style
 comparisons the paper describes is a separate, explicitly out-of-scope
-item (`docs/next_task.md` item 4), requiring real workload traces
+item (`docs/project_status.md` item 4), requiring real workload traces
 exercising the DRAM cache meaningfully. Not attempted this stage, per
 the task's explicit instruction to implement bypass mode only.
 

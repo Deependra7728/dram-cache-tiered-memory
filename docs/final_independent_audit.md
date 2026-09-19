@@ -1,13 +1,13 @@
 # Final Independent Research-Grade Audit
 
-**Scope**: independent correctness audit of the ChampSim port of
-"Enabling Design Space Exploration of DRAM Caches in Emerging Memory
-Systems" (arXiv 2303.13029 / ISPASS'23), against the paper and against
-the gem5 reference (`darchr/dram-cache-model`, branch
-`dram_cache_disaggregated`).
+**Scope**: independent correctness audit of this ChampSim DRAM cache
+implementation, checked against the architecture described in "Enabling
+Design Space Exploration of DRAM Caches in Emerging Memory Systems"
+(arXiv 2303.13029 / ISPASS'23) and against the gem5 reference model
+(`darchr/dram-cache-model`, branch `dram_cache_disaggregated`).
 
 **Method**: every conclusion below was derived by reading the actual
-source (paper text layer, gem5 source re-fetched this session, current
+source (paper text layer, gem5 source re-fetched for this audit, current
 ChampSim tree) and, where behavioral, by executing purpose-written
 standalone probes. **No prior report, documentation, code comment, or
 test name was accepted as evidence.** Where a prior claim was checked

@@ -63,9 +63,9 @@ One test bug was found and fixed during this validation (not an
 implementation bug): Case D's initial setup read (installing the first
 resident line) is *itself* a cold `RdMissClean`, so asserting the
 harness-cumulative `numRdMissClean == 1` after the case-under-test read
-was wrong (it's legitimately 2 — one from setup, one from the case). Per
-the "do not change the expected result, investigate instead" instruction,
-the code was checked against gem5's `checkHitOrMiss` (cold misses are
+was wrong (it's legitimately 2 — one from setup, one from the case).
+Rather than relax the expected value, the implementation was checked
+first: the code was verified against gem5's `checkHitOrMiss` (cold misses are
 classified as clean misses, `policy_manager.cc:1506-1519`) and confirmed
 correct; the test was fixed to use before/after deltas around the
 case-under-test operation instead of a cumulative count.
@@ -131,7 +131,7 @@ Build: `g++ -std=c++11 -Iinc -o /tmp/test_dcm_controller_latency tests/test_dcm_
 
 **Two test-methodology bugs found and fixed while writing this file**
 (both in the test file, not in `DRAM_CACHE_MANAGER` — the same category
-of issue already documented for other test files this session, e.g.
+of issue already documented for other test files, e.g.
 `test_dcm_near_far_config.cc`'s write-forwarding note):
 1. An earlier version of the cold-miss/hit timing helpers reset
    `current_core_cycle[0]` to 0 between a warm-up phase and a measurement
@@ -198,7 +198,7 @@ equivalence (see `limitations.md`).
   policy-accurate" to verified via Table II.
 - `docs/gem5_to_champsim_mapping.md`: needs a new fact/section for the
   eager-metadata-update ordering and the tag-check-completion write-back
-  trigger point — added (see next_task.md item to keep this doc's
+  trigger point — added (see project_status.md item to keep this doc's
   "Confirmed gem5 behavioral facts" numbering consistent going forward).
 - `docs/feature_coverage.md`: updated (see that file directly).
 - Actual gem5 implementation: re-read `handleRequestorPkt`
@@ -545,7 +545,7 @@ Build: `g++ -std=c++11 -Iinc -o /tmp/test_dcm_memory_dispatch tests/test_dcm_mem
 
 **Two real test-methodology bugs were found and fixed while writing
 this file** (both in the shared "quiescent" helper, the same general
-category of issue already documented in this session's other test
+category of issue already documented in the other test
 files' banner comments):
 1. The quiescent check omitted `pendingResponses.empty()`: `ORB.empty()`
    becomes true as soon as `completeRequest()` runs, but a nonzero

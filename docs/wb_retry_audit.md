@@ -16,7 +16,7 @@ focusing on `processFarMemWriteEvent`, `farMemRecvReqRetry`,
 site), the current ChampSim `MEMORY_CONTROLLER`/`DRAM_CACHE_MANAGER`
 write path (`src/dram_controller.cc`, `src/dram_cache_manager.cc`), and
 `docs/final_paper_coverage_audit.md`, `docs/gem5_to_champsim_mapping.md`,
-`docs/limitations.md`, `docs/next_task.md`, `docs/validation.md`.
+`docs/limitations.md`, `docs/project_status.md`, `docs/validation.md`.
 
 **Headline finding, ahead of the detailed walkthrough: this audit found
 an actual, reproducible, silent-write-loss bug in ChampSim's
@@ -317,13 +317,13 @@ existing test's small, deliberate scenario sizes keep `farMC`'s WQ far
 below its 64-entry capacity in all current test suites and both
 smoke-test traces) — so this finding does not retroactively call any
 completed validation into question. But it MUST be fixed before the
-next planned major work item (`next_task.md`'s "Full Case Study 1/2/3
+next planned major work item (`project_status.md`'s "Full Case Study 1/2/3
 reproduction runs," explicitly involving NPB) is attempted, since that
 is precisely the write-volume regime where this bug would silently
 corrupt results with no error, no test failure, and no indication
 anything went wrong.
 
-## Smallest correct implementation plan (not coded, per instruction)
+## Smallest correct implementation plan (not coded -- scoped out)
 
 Entirely contained inside `src/dram_cache_manager.cc` /
 `inc/dram_cache_manager.h`; no `dram_controller.cc` changes needed.
@@ -450,7 +450,7 @@ are unaffected here.
 this file** (none in the implementation — all in the test's own
 methodology, the same general category as bugs already documented in
 `tests/test_dcm_controller_latency.cc`'s and
-`tests/test_dcm_bypass.cc`'s banner comments this session):
+`tests/test_dcm_bypass.cc`'s banner comments):
 
 1. `pumpUntilQuiescent`'s original condition
    (`WB.empty() && farMC.WQ.occupancy==0`) was trivially satisfied the
@@ -495,7 +495,7 @@ exposure... explicitly out-of-scope"; the near-side tag-check and
 fill-write dispatches turn out to share it too). Tests in this file
 avoid ever triggering it (via serialized/paced admission) specifically
 so they stay focused on the WB→far-write path this task scoped. Not
-tracked as a new `next_task.md` item beyond the existing "WB→far
+tracked as a new `project_status.md` item beyond the existing "WB→far
 dispatch retry-on-nack" framing, since it is the same underlying
 `MEMORY_CONTROLLER` primitive gap, just reachable from additional call
 sites — worth revisiting together if this class of issue is ever

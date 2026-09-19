@@ -4,6 +4,8 @@ A cycle-level DRAM cache controller built on [ChampSim](https://github.com/Champ
 
 The project has two parts: a **controller implementation** and a **performance study** that uses it.
 
+The cache architecture modeled here is the one described in Babaie, Akram and Lowe-Power, *Enabling Design Space Exploration of DRAM Caches in Emerging Memory Systems* (arXiv:2303.13029, ISPASS'23), whose reference model targets gem5. This is an independent implementation for ChampSim, a trace-driven simulator with a different execution model, cross-checked against the gem5 reference and against the paper's per-case operation counts. See `docs/validation.md`.
+
 ---
 
 ## Part 1 — The Controller
@@ -22,7 +24,7 @@ A memory-side cache manager that sits between the last-level cache and two indep
 | Link latency | Configurable far-memory delay for CXL-style disaggregation |
 | Policies | `baseline` (Cascade Lake), `bear` (write-hit optimized), `oracle` (idealized) |
 
-**How a request flows.** Tags live alongside data, so every access begins with a read of the near memory to check the tag. What follows depends on the outcome:
+Tags live alongside data, so every access begins with a read of the near memory to check the tag. What follows depends on the outcome:
 
 | Case | Memory operations |
 |---|---|
@@ -33,7 +35,7 @@ A memory-side cache manager that sits between the last-level cache and two indep
 
 One CPU request becomes up to four memory operations. That amplification is what Part 2 measures.
 
-**Policies.** `baseline` always performs the tag-check read. `bear` skips it on write hits, where the fetched data is overwritten anyway. `oracle` additionally skips it on clean misses, assuming zero-latency tag knowledge — an upper bound on what tag-check elimination can buy.
+`baseline` always performs the tag-check read. `bear` skips it on write hits, where the fetched data is overwritten anyway. `oracle` additionally skips it on clean misses, assuming zero-latency tag knowledge — an upper bound on what tag-check elimination can buy.
 
 ---
 
@@ -41,7 +43,7 @@ One CPU request becomes up to four memory operations. That amplification is what
 
 42 configurations: 7 designs × 6 SPEC CPU2006 workloads, each 1B warmup + 500M measured instructions.
 
-**Does a DRAM cache help?** No — it costs ~20% throughput versus no cache at all, on every workload tested.
+Does a DRAM cache help? No. It costs about 20% throughput versus no cache at all, on every workload tested.
 
 | Workload | Miss ratio | Amplification | vs. no cache |
 |---|---|---|---|
@@ -53,14 +55,14 @@ One CPU request becomes up to four memory operations. That amplification is what
 | 482.sphinx3 | 2.6% | 1.13× | 0.76× |
 | **geomean** | | **1.1–2.1×** | **0.79×** |
 
-**Why?** Not bandwidth. The `oracle` policy removes ~20% of all memory traffic and recovers only **4% IPC** — the eliminated operations were never on the critical path. The tag-check read still serializes ahead of the fill and the far-memory access. Latency, not bandwidth, is the limiter.
+Why? Not bandwidth. The `oracle` policy removes about 20% of all memory traffic and recovers only 4% IPC, because the eliminated operations were never on the critical path: the tag-check read still serializes ahead of the fill and the far-memory access. Latency, not bandwidth, is the limiter.
 
 | Policy | Traffic removed | IPC gain |
 |---|---|---|
 | `bear` | 13.6% | +0.8% |
 | `oracle` | 19.6% | +3.7% |
 
-**Disaggregation.** Adding link latency to far memory collapses throughput, and the loss tracks miss ratio — workloads that rarely reach far memory barely notice.
+Adding link latency to far memory collapses throughput, and the loss tracks miss ratio: workloads that rarely reach far memory barely notice.
 
 | Link latency | 100 ns | 500 ns | 1 µs |
 |---|---|---|---|
@@ -72,15 +74,20 @@ At 1 µs the DRAM cache system runs at 0.36× a system with no DRAM cache at all
 
 ## Running It
 
-**Build** (bimodal branch predictor, no prefetchers, LRU, 1 core):
+Build (bimodal branch predictor, no prefetchers, LRU, 1 core):
 
 ```bash
 ./build_champsim.sh bimodal no no no no lru 1
+cp bin/bimodal-no-no-no-no-lru-1core bin/champsim
 ```
 
-**Traces** are not in this repo (2 GB, licensed). Download the DPC-3 SPEC CPU2006 traces from [dpc3.compas.cs.stonybrook.edu](https://dpc3.compas.cs.stonybrook.edu/?SW_IS) into `dpc3_traces/`.
+The build script renames its output to a configuration-specific name. The
+second line gives it the plain name that `run_case_studies.sh` expects by
+default; pass `--binary NAME` to the harness to use a different one.
 
-**Single run:**
+Traces are not in this repo (2 GB, licensed). Download the DPC-3 SPEC CPU2006 traces from [dpc3.compas.cs.stonybrook.edu](https://dpc3.compas.cs.stonybrook.edu/?SW_IS) into `dpc3_traces/`.
+
+Single run:
 
 ```bash
 ./bin/champsim --warmup_instructions 1000000000 \
@@ -95,7 +102,7 @@ At 1 µs the DRAM cache system runs at 0.36× a system with no DRAM cache at all
 | `--dcm_bypass` | (no argument) | Disable the cache — the no-DRAM-cache control |
 | `--dcm_link_latency_ns` | `0` \| `100` \| `500` \| `1000` | Far-memory link latency |
 
-**Full 42-run matrix:**
+Full 42-run matrix:
 
 ```bash
 ./run_case_studies.sh              # all 7 configs × 6 traces
@@ -105,7 +112,7 @@ At 1 µs the DRAM cache system runs at 0.36× a system with no DRAM cache at all
 
 Each run prints a `DCM` statistics block: hit/miss breakdown by type, per-interface operation counts, queue occupancy, access amplification, and a residual check confirming all queues drained.
 
-**Tests** — 16 suites, all self-contained:
+Tests (16 suites, all self-contained):
 
 ```bash
 g++ -std=c++11 -Iinc -o /tmp/t tests/test_dcm_baseline.cc \
@@ -132,8 +139,8 @@ run_case_studies.sh          42-configuration experiment harness
 
 ## Notes and Limitations
 
-- **Trace-driven, single-core.** ChampSim replays traces rather than booting an OS, so OS effects and multi-threaded interference are out of scope.
-- **Warmup is instruction-based** (1B instructions), not checkpoint-based. Cold misses stay under 17% of measured misses on 5 of 6 workloads; `401.bzip2` is higher because its working set largely fits in the cache, leaving mostly compulsory misses.
-- **`619.lbm_s` is excluded** — the trace file is truncated and fails `xz -t`.
+- Trace-driven, single-core: ChampSim replays traces rather than booting an OS, so OS effects and multi-threaded interference are out of scope.
+- Warmup is instruction-based (1B instructions), not checkpoint-based. Cold misses stay under 17% of measured misses on 5 of 6 workloads; `401.bzip2` is higher because its working set largely fits in the cache, leaving mostly compulsory misses.
+- `619.lbm_s` is excluded: the trace file is truncated and fails `xz -t`.
 
 Built on [ChampSim](https://github.com/ChampSim/ChampSim) (see `LICENSE`).

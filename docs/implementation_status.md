@@ -178,7 +178,7 @@ and are documented in full in `limitations.md`:
   technology as well as link latency) is not implemented — not requested
   this stage.
 
-### Remaining unimplemented functionality (see next_task.md)
+### Remaining unimplemented functionality (see project_status.md)
 
 - ~~BEAR-Wr-Opt~~ — DONE, see Stage 5 below.
 - Oracle policy.
@@ -676,7 +676,7 @@ introduces. No C-classified (not reproducible) differences found.
 Implements the mechanism the paper's Case Study 1/2 "No-DRAM-Cache"
 comparison configuration needs (final-audit Section 1.15). Does NOT run
 the actual Case Study 1/2 experiments — that remains a separate,
-explicitly out-of-scope item (`next_task.md`), requiring real workload
+explicitly out-of-scope item (`project_status.md`), requiring real workload
 traces.
 
 ### Remaining unimplemented functionality (as of Stage 8)

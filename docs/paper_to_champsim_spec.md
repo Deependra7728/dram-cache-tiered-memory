@@ -28,7 +28,7 @@ ISPASS'23 companion abstract (same model, condensed).
 | Independent near/far memory technologies (HBM2 vs DDR4/NVM) | Case Study 1 baseline; Case Study 3 varies far tech and link latency | **Fixed this stage**: `MEMORY_CONTROLLER` timing is now per-instance (`set_timing()`), so near/far *can* diverge. They are not yet *actually* diverged in `main.cc` (both get identical default timing) — that's a deliberate, documented follow-up (see `gem5_to_champsim_mapping.md`), not a limitation of the mechanism anymore |
 | Configurable far-memory link latency (100/500/1000ns, Case Study 3) | Additional latency on the far-memory path only | `DCM_LINK_LATENCY_CYCLES_*` constants defined, **not yet applied anywhere** |
 | Three selectable policies: baseline (CascadeLakeNoPartWrs), BEAR-Wr-Opt, Oracle | Case Study 2 | `DCM_POLICY` enum exists; **none of the three transition tables implemented** (explicitly out of scope for this stage and the previous one) |
-| Table II access-amplification per {read,write}×{hit,miss}×{clean,dirty} | The paper's own correctness spec for any implementation of this model | Not yet automated as tests — blocked on real hit/miss/dirty detection (next_task.md item 3) |
+| Table II access-amplification per {read,write}×{hit,miss}×{clean,dirty} | The paper's own correctness spec for any implementation of this model | Not yet automated as tests — blocked on real hit/miss/dirty detection (project_status.md item 3) |
 
 ## Request cases from the original master instruction — status
 
@@ -48,7 +48,7 @@ ISPASS'23 companion abstract (same model, condensed).
 12. WB pressure/full — WB insert/drain is wired, but nothing yet makes
     the manager back off when it's "full" (it drains immediately, so it
     never actually backs up) — this is the one remaining item, tracked in
-    `next_task.md`.
+    `project_status.md`.
 
 All 12 request cases from the original master instruction are now either
 fully done (1–11) or partially done with the remaining gap identified

@@ -10,7 +10,7 @@ current `DRAM_CACHE_MANAGER`/`MEMORY_CONTROLLER` source
 (`docs/bypass_mode.md`), the WB path (`docs/wb_retry_audit.md`), and the
 pending-dispatch path (`pendingFarDispatches`/`processPendingFarDispatches()`).
 gem5's `policy_manager.cc`/`.hh` (already pulled in prior stages) used
-only as behavioral reference, per instruction — not re-fetched this
+only as behavioral reference, by design — not re-fetched this
 stage since no new gem5 semantic question arose beyond what the WB
 audit already established (the retry principle is the same for every
 path: retain until confirmed accepted).

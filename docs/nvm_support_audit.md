@@ -12,7 +12,7 @@ there beyond what the arXiv version already covers), the actual pulled
 `MEMORY_CONTROLLER` implementation (`inc/dram_controller.h`,
 `src/dram_controller.cc`), and `docs/final_paper_coverage_audit.md`,
 `docs/gem5_to_champsim_mapping.md`, `docs/limitations.md`,
-`docs/next_task.md`.
+`docs/project_status.md`.
 
 ## 1. What NVM technology/model does gem5 use?
 

@@ -9,7 +9,7 @@ re-read: both papers (already fully pulled and read in prior stages —
 Section III methodology, Section IV/V/VI case studies, Table I/II),
 `docs/final_paper_coverage_audit.md`, `docs/paper_to_champsim_spec.md`,
 `docs/gem5_to_champsim_mapping.md`, `docs/feature_coverage.md`,
-`docs/limitations.md`, `docs/next_task.md`, `docs/validation.md`.
+`docs/limitations.md`, `docs/project_status.md`, `docs/validation.md`.
 
 ## 1. Available traces — investigated, not assumed
 

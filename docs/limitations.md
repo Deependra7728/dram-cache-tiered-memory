@@ -127,7 +127,7 @@
   `--low_bandwidth` knob adjustment. Verified: near=8, far=13 cycles
   (`tests/test_dcm_near_far_config.cc` Test 1). Not fixed in
   `set_timing()`'s general contract or any other pre-existing call site,
-  to avoid unrelated scope creep — see `next_task.md` if broader
+  to avoid unrelated scope creep — see `project_status.md` if broader
   DRAM-timing precision work is wanted later.
 - **ChampSim's own write-queue-forwarding shortcut**
   (`MEMORY_CONTROLLER::add_rq`, `dram_controller.cc:428-455`) services a

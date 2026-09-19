@@ -1,13 +1,12 @@
-# Next Task
+# Project Status
 
 Stages 1–6 are all done and verified: integration skeleton; per-instance
 timing + ORB/CRB; complete baseline tag/metadata behavior; WB
 backpressure + near/far config + link latency + statistics; BEAR-Wr-Opt;
 Oracle. **All three paper policies (baseline/CascadeLakeNoPartWrs,
 BEAR-Wr-Opt, Oracle/RambusHypo) are now implemented, independently
-selectable, gem5-cross-checked, and Table-II-verified.** This completes
-the master project's core "port the DRAM cache model" objective for the
-policy state machines.
+selectable, gem5-cross-checked, and Table-II-verified.** This completes the core
+DRAM cache modeling objective for the policy state machines.
 
 A final no-code-changes audit (`docs/final_paper_coverage_audit.md`)
 then found two remaining gaps against gem5: (a) controller
@@ -15,7 +14,7 @@ frontend/backend latency, and (b) `bypass_dcache` (no-DRAM-cache
 comparison mode). **Both are now DONE** — see below. Two independent
 follow-ups remain.
 
-## Just completed — CRITICAL/HIGH audit fixes (stage 13)
+## Most recent work — CRITICAL/HIGH audit fixes (stage 13)
 
 The independent audit (`docs/final_independent_audit.md`) found four
 blocking defects; **all four are now fixed and verified**
@@ -48,7 +47,7 @@ Regression at that stage: **15/15 suites pass** (12 pre-existing, none weakened,
 `test_dcm_warmup.cc`). Table II re-measured after every change:
 **24/24 exact**.
 
-## What's left
+## Remaining work
 
 0. ~~BLOCKING — DRAM-cache address-granularity defect~~ — **DONE
    (stage 15)**. `PACKET::address` is a cache-line address everywhere in
@@ -195,7 +194,7 @@ The validated DCM implementation was not touched: 16/16 suites pass,
 Table II is 24/24, and BASELINE/BEAR/ORACLE produce IPC identical to the
 pre-revert build on the same short trace.
 
-### What's left, in priority order
+### Remaining work, in priority order
 
 1. **Launch the 42-run matrix** at 1B/500M once the representative
    434.zeusmp result has been inspected and approved. Not launched yet.

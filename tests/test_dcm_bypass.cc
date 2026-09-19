@@ -16,7 +16,7 @@
 //   farMemRecvReqRetry (policy_manager.cc:644-647):
 //       if (bypassDcache) { port.sendRetryReq(); return; }
 //     (no ChampSim equivalent needed -- this port has no retry-on-NACK
-//     concept on the far side, see docs/next_task.md item on WB
+//     concept on the far side, see docs/project_status.md item on WB
 //     retry-on-nack, a SEPARATE unimplemented feature.)
 //
 // Ported behavior (see docs/bypass_mode.md for the full architectural
@@ -494,7 +494,7 @@ int main()
 
         // NOTE: PACKET_QUEUE::ACCESS on the RQ side is only incremented by
         // MEMORY_CONTROLLER::add_rq's write-queue-forwarding shortcut
-        // (dram_controller.cc:448, a pre-existing artifact this session
+        // (dram_controller.cc:448, a pre-existing artifact
         // ran into before -- see test_dcm_controller_latency.cc's banner
         // comment), NOT on normal admission -- so it is not a valid
         // "was this request received" signal here. ROW_BUFFER_HIT+MISS,
@@ -586,7 +586,7 @@ int main()
     // mode (same physical link is crossed); controller frontend/backend
     // latency does NOT apply in bypass mode at all (verified from gem5's
     // farMemRecvTimingResp bypass branch -- see file banner). Uses
-    // elapsed-cycle deltas, never a clock reset, per this session's
+    // elapsed-cycle deltas, never a clock reset, per this port's
     // established test-methodology lesson (see
     // tests/test_dcm_controller_latency.cc's banner comment for the two
     // real bugs that pattern was adopted to avoid).
